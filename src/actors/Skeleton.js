@@ -131,26 +131,26 @@ export class Skeleton {
 
     open() {
         let distance = 0;
-        myChestManager.keys.forEach((ori) => {
+        myChestManager.chests.forEach((ori) => {
             distance = 0;
             distance = Math.sqrt(Math.pow(this.position.x - ori.position.x, 2) + Math.pow(this.position.y - ori.position.y, 2));
 
             if (distance < 30 && !ori.isChestOpen) {
 
-                switch (myChestManager.lastKey) {
+                switch (myChestManager.latestOpenedChest) {
                     case "":
                         ori.isChestOpen = true;
-                        myChestManager.lastKey = ori.id;
+                        myChestManager.latestOpenedChest = ori.id;
                         break
                     case ori.id:
                         ori.isChestOpen = true;
-                        myChestManager.lastKey = "";
+                        myChestManager.latestOpenedChest = "";
                         break
                     default:
-                        myChestManager.keys.forEach(e => e.isChestOpen = false);
-                        myChestManager.lastKey = "";
+                        myChestManager.chests.forEach(e => e.isChestOpen = false);
+                        myChestManager.latestOpenedChest = "";
                         ori.isChestOpen = true;
-                        myChestManager.lastKey = ori.id;
+                        myChestManager.latestOpenedChest = ori.id;
                         break
                 }
             }

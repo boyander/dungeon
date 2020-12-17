@@ -149,7 +149,7 @@ var FPSViewer = /*#__PURE__*/function () {
     value: function draw(delta, ctx) {
       var fps = (1 / delta).toFixed(2);
       ctx.font = "15px Arial";
-      ctx.fillStyle = "black";
+      ctx.fillStyle = "white";
       ctx.fillText("FPS: ".concat(fps), this.position.x, this.position.y);
     }
   }]);
@@ -186,7 +186,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43027" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "32897" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -5,11 +5,11 @@ export class AudioStatus {
   }
   keyboard_event() {
 
-}
-update() {
+  }
+  update() {
 
-}
-draw(delta, ctx) {
+  }
+  draw(delta, ctx) {
     ctx.font = "15px Arial";
     ctx.fillStyle = "white";
     ctx.fillText(
@@ -17,5 +17,5 @@ draw(delta, ctx) {
       this.position.x,
       this.position.y
     );
-}
+  }
 }

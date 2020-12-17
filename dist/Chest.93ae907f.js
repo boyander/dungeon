@@ -134,19 +134,17 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Chest = /*#__PURE__*/function () {
-  function Chest(position, id, num, head, col) {
+  function Chest(position, value, head, col, isChestOpen) {
     _classCallCheck(this, Chest);
 
     this.position = {
-      x: Math.floor(Math.random() * 450) + 1,
-      y: Math.floor(Math.random() * 450) + 1
+      x: position.x,
+      y: position.y
     };
-    this.id = id;
-    this.name = "key" + num + id;
-    this.value = num;
+    this.value = value;
     this.head = head;
     this.color = col;
-    this.isChestOpen = false;
+    this.isChestOpen = isChestOpen;
     this.spritesheet = new Image();
     this.spritesheet.src = require("../../public/images/dungeonStuffs3.png");
   }
@@ -176,7 +174,11 @@ var Chest = /*#__PURE__*/function () {
         };
       }
 
-      ctx.drawImage(this.spritesheet, frameSize.x, frameSize.y, selectImageChest.x, selectImageChest.y, this.position.x, this.position.y, 45, 30);
+      ctx.drawImage(this.spritesheet, frameSize.x, frameSize.y, selectImageChest.x, selectImageChest.y, this.position.x - 12, this.position.y - 18, 45, 30);
+      ctx.beginPath();
+      ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
+      ctx.closePath();
+      ctx.fill();
       ctx.fillStyle = this.color;
       ctx.beginPath();
       ctx.arc(this.head, 13, 8, 1.5 * Math.PI, 0.5 * Math.PI, this.value % 2 ? false : true);
@@ -226,7 +228,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43027" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "32897" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

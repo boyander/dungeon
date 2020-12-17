@@ -43,7 +43,6 @@ export class Map {
     let rows = dungeonMap.trim().split("\n");
     this.map = rows.map((row) => row.split(""));
     console.log("Map size", rows[0].length, this.map.length);
-
   }
 
   get_dungeon_start() {
@@ -58,6 +57,18 @@ export class Map {
       }
     }
     throw new Error("Set the S for pacman start");
+  }
+
+  get_chests_start_options() {
+    let availablePositions = [];
+    for (let i = 0; i < this.map.length; i++) {
+      for (let j = 0; j < this.map[i].length; j++) {
+        if (this.map[i][j] == ".") {
+          availablePositions.push({ x: this.position.x + this.tileSize * j + this.tileSize / 2, y: this.position.y + this.tileSize * i + this.tileSize / 2 })
+        }
+      }
+    }
+    return availablePositions;
   }
 
   pos_to_tile(position) {
@@ -113,45 +124,10 @@ export class Map {
     );
   }
 
-  // draw_dot(ctx, i, j, type = "normal") {
-  //   ctx.strokeStyle = "black";
-  //   ctx.fillStyle = type == "normal" ? "yellow" : "red";
-  //   ctx.lineWidth = 0.5;
-  //   ctx.beginPath();
-  //   ctx.arc(
-  //     this.position.x + j * this.tileSize + this.tileSize / 2,
-  //     this.position.y + i * this.tileSize + this.tileSize / 2,
-  //     type == "normal" ? this.tileSize / 6 : this.tileSize / 4,
-  //     0,
-  //     2 * Math.PI
-  //   );
-  //   ctx.fill();
-  //   ctx.stroke();
-  //   ctx.closePath();
-  // }
-
-
-  keyboard_event() {
-
-  }
-  update() {
-
-  }
+  keyboard_event() { }
+  update() { }
 
   draw(delta, ctx) {
-
-    // let frameSize = { x: 64, y: 55 };
-    // ctx.drawImage(
-    //   this.spritesheet,
-    //   0,
-    //   89,
-    //   frameSize.x,
-    //   frameSize.y,
-    //   this.position.x,
-    //   this.position.y,
-    //   500,
-    //   500
-    // );
 
     for (let i = 0; i < this.map.length; i++) {
       for (let j = 0; j < this.map[i].length; j++) {
@@ -161,6 +137,5 @@ export class Map {
         // if (cell == "*") this.draw_dot(ctx, i, j, "super");
       }
     }
-
   }
 }

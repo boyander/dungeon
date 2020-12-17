@@ -134,19 +134,17 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Chest = /*#__PURE__*/function () {
-  function Chest(position, id, num, head, col) {
+  function Chest(position, value, head, col, isChestOpen) {
     _classCallCheck(this, Chest);
 
     this.position = {
-      x: Math.floor(Math.random() * 450) + 1,
-      y: Math.floor(Math.random() * 450) + 1
+      x: position.x,
+      y: position.y
     };
-    this.id = id;
-    this.name = "key" + num + id;
-    this.value = num;
+    this.value = value;
     this.head = head;
     this.color = col;
-    this.isChestOpen = false;
+    this.isChestOpen = isChestOpen;
     this.spritesheet = new Image();
     this.spritesheet.src = require("../../public/images/dungeonStuffs3.png");
   }
@@ -176,7 +174,11 @@ var Chest = /*#__PURE__*/function () {
         };
       }
 
-      ctx.drawImage(this.spritesheet, frameSize.x, frameSize.y, selectImageChest.x, selectImageChest.y, this.position.x, this.position.y, 45, 30);
+      ctx.drawImage(this.spritesheet, frameSize.x, frameSize.y, selectImageChest.x, selectImageChest.y, this.position.x - 12, this.position.y - 18, 45, 30);
+      ctx.beginPath();
+      ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
+      ctx.closePath();
+      ctx.fill();
       ctx.fillStyle = this.color;
       ctx.beginPath();
       ctx.arc(this.head, 13, 8, 1.5 * Math.PI, 0.5 * Math.PI, this.value % 2 ? false : true);
@@ -198,6 +200,143 @@ var Chest = /*#__PURE__*/function () {
 }();
 
 exports.Chest = Chest;
+},{"../../public/images/dungeonStuffs3.png":"public/images/dungeonStuffs3.png"}],"src/actors/Map.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Map = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var dungeonMap = "\nWWWWWWWWWWWWWWWWWWWWWWWWWWWW\nW..S.........WW............W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW..........................W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW......WW....WW....WW......W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW.WWWW.WW..........WW.WWWW.W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW.WWWW.WW.W......W.WW.WWWW.W\nW.........W......W.........W\nW.WWWW.WW.W......W.WW.WWWW.W\nW.WWWW.WW.WWW..WWW.WW.WWWW.W\nW.WWWW.WW..........WW.WWWW.W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW............WW............W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW...WW................WW...W\nWWW.WW.WW.WWWWWWWW.WW.WW.WWW\nWWW.WW.WW.WWWWWWWW.WW.WW.WWW\nW......WW....WW....WW......W\nW.WWWWWWWWWW.WW.WWWWWWWWWW.W\nW.WWWWWWWWWW.WW.WWWWWWWWWW.W\nW..........................W\nWWWWWWWWWWWWWWWWWWWWWWWWWWWW\n";
+
+var Map = /*#__PURE__*/function () {
+  function Map() {
+    var tileSize = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 23;
+
+    _classCallCheck(this, Map);
+
+    this.spritesheet = new Image();
+    this.spritesheet.src = require("../../public/images/dungeonStuffs3.png");
+    this.position = {
+      x: 0,
+      y: 0
+    };
+    this.tileSize = tileSize;
+    var rows = dungeonMap.trim().split("\n");
+    this.map = rows.map(function (row) {
+      return row.split("");
+    });
+    console.log("Map size", rows[0].length, this.map.length);
+  }
+
+  _createClass(Map, [{
+    key: "get_dungeon_start",
+    value: function get_dungeon_start() {
+      for (var i = 0; i < this.map.length; i++) {
+        for (var j = 0; j < this.map[i].length; j++) {
+          if (this.map[i][j] == "S") {
+            return {
+              x: this.position.x + this.tileSize * j + this.tileSize / 2,
+              y: this.position.y + this.tileSize * i + this.tileSize / 2
+            };
+          }
+        }
+      }
+
+      throw new Error("Set the S for pacman start");
+    }
+  }, {
+    key: "get_chests_start_options",
+    value: function get_chests_start_options() {
+      var availablePositions = [];
+
+      for (var i = 0; i < this.map.length; i++) {
+        for (var j = 0; j < this.map[i].length; j++) {
+          if (this.map[i][j] == ".") {
+            availablePositions.push({
+              x: this.position.x + this.tileSize * j + this.tileSize / 2,
+              y: this.position.y + this.tileSize * i + this.tileSize / 2
+            });
+          }
+        }
+      }
+
+      return availablePositions;
+    }
+  }, {
+    key: "pos_to_tile",
+    value: function pos_to_tile(position) {
+      var i = Math.floor((position.x - this.position.x) / this.tileSize);
+      var j = Math.floor((position.y - this.position.y) / this.tileSize);
+      return [j, i];
+    }
+  }, {
+    key: "tile_at_index",
+    value: function tile_at_index(tileIndex) {
+      try {
+        var tile = this.map[tileIndex[0]][tileIndex[1]];
+        return tile;
+      } catch (error) {
+        console.log("out of bounds");
+        return false;
+      }
+    }
+  }, {
+    key: "tile",
+    value: function tile(position, direction) {
+      var tileIndex = this.pos_to_tile(position);
+      var facing = [tileIndex[0] + direction[1], tileIndex[1] + direction[0]];
+      var tile = this.tile_at_index(facing);
+      return tile;
+    }
+  }, {
+    key: "draw_wall",
+    value: function draw_wall(ctx, i, j) {
+      var frameSize = {
+        x: 0,
+        y: 16
+      };
+      ctx.drawImage(this.spritesheet, frameSize.x, frameSize.y, 20, 18, this.position.x + j * this.tileSize, this.position.y + i * this.tileSize, 30, 30);
+    }
+  }, {
+    key: "draw_floor",
+    value: function draw_floor(ctx, i, j) {
+      var frameSize = {
+        x: 64,
+        y: 96
+      };
+      ctx.drawImage(this.spritesheet, frameSize.x, frameSize.y, 20, 18, this.position.x + j * this.tileSize, this.position.y + i * this.tileSize, 30, 30);
+    }
+  }, {
+    key: "keyboard_event",
+    value: function keyboard_event() {}
+  }, {
+    key: "update",
+    value: function update() {}
+  }, {
+    key: "draw",
+    value: function draw(delta, ctx) {
+      for (var i = 0; i < this.map.length; i++) {
+        for (var j = 0; j < this.map[i].length; j++) {
+          var cell = this.map[i][j];
+          if (cell == "W") this.draw_wall(ctx, i, j);
+          if (cell == "." || cell == "S") this.draw_floor(ctx, i, j); // if (cell == "*") this.draw_dot(ctx, i, j, "super");
+        }
+      }
+    }
+  }]);
+
+  return Map;
+}();
+
+exports.Map = Map;
 },{"../../public/images/dungeonStuffs3.png":"public/images/dungeonStuffs3.png"}],"src/actors/ChestManager.js":[function(require,module,exports) {
 "use strict";
 
@@ -207,6 +346,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.myChestManager = void 0;
 
 var _Chest = require("./Chest.js");
+
+var _Map = require("./Map.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -219,25 +360,7 @@ var ChestManager = /*#__PURE__*/function () {
     _classCallCheck(this, ChestManager);
 
     this.chests = [//position,ID,num,head,color
-    new _Chest.Chest({
-      x: 0,
-      y: 0
-    }, "AA", 0, 375, "red"), new _Chest.Chest({
-      x: 0,
-      y: 0
-    }, "AA", 1, 380, "red"), new _Chest.Chest({
-      x: 0,
-      y: 0
-    }, "BB", 2, 410, "blue"), new _Chest.Chest({
-      x: 0,
-      y: 0
-    }, "BB", 3, 415, "blue"), new _Chest.Chest({
-      x: 0,
-      y: 0
-    }, "CC", 4, 445, "green"), new _Chest.Chest({
-      x: 0,
-      y: 0
-    }, "CC", 5, 450, "green")];
+    new _Chest.Chest(this.chest_start_options(), "AA", 375, "red", false), new _Chest.Chest(this.chest_start_options(), "AA", 380, "red", false), new _Chest.Chest(this.chest_start_options(), "BB", 410, "blue", false), new _Chest.Chest(this.chest_start_options(), "BB", 415, "blue", false), new _Chest.Chest(this.chest_start_options(), "CC", 445, "green", false), new _Chest.Chest(this.chest_start_options(), "CC", 450, "green", false)];
     this.latestOpenedChest = "";
     return this;
   }
@@ -251,6 +374,16 @@ var ChestManager = /*#__PURE__*/function () {
   }, {
     key: "draw",
     value: function draw(delta, ctx) {}
+  }, {
+    key: "chest_start_options",
+    value: function chest_start_options() {
+      var map = new _Map.Map();
+      var availablePositions = [];
+      availablePositions = map.get_chests_start_options();
+      var random = 0;
+      random = Math.floor(Math.random() * availablePositions.length);
+      return availablePositions[random];
+    }
   }]);
 
   return ChestManager;
@@ -258,7 +391,7 @@ var ChestManager = /*#__PURE__*/function () {
 
 var myChestManager = new ChestManager();
 exports.myChestManager = myChestManager;
-},{"./Chest.js":"src/actors/Chest.js"}],"node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./Chest.js":"src/actors/Chest.js","./Map.js":"src/actors/Map.js"}],"node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -286,7 +419,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43027" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "32897" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

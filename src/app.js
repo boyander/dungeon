@@ -14,14 +14,9 @@ window.onload = () => {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
-    // canvas.onclick = () => {
-    //     // am.toggleMute();
-    //     // am.play();
-    //     var audioElement = new Audio();
-    //     audioElement.src = '../../assets/audioeffects/ambience-creepyatmosfear.wav';
-    //     audioElement.volume = 1;
-    //     audioElement.play().then(() => console.log(`Playing audio`)).catch((e) => console.log("Cannot start audio because browser protects it"));
-    // };
+    const numChest = 6;
+
+    // canvas.onclick = () => { };
 
     // Actors
     let map = new Map();
@@ -29,8 +24,8 @@ window.onload = () => {
 
     let fps = new FPSViewer({ x: 5, y: 15 });
     let chrono = new Chronometer({ x: 100, y: 15 });
-    let audio = new AudioStatus({ x: 200, y: 15 });
-    let skeleton = new Skeleton(initialPos,map);      
+    let audio = new AudioStatus({ x: 250, y: 15 });
+    let skeleton = new Skeleton(initialPos,map);        
 
     let actors = [map, fps, chrono, audio, skeleton, ...myChestManager.chests];
 
