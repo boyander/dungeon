@@ -29,7 +29,7 @@ export class Skeleton {
         this.map = map;
     }
 
-    draw(delta, ctx) {        
+    draw(delta, ctx) {
 
         const frameSize = { x: 64, y: 64 };
         const seqName = this.speed.x == 0 && this.speed.y == 0 ? `still-${this.currentSequence}` : `moving-${this.currentSequence}`;
@@ -73,7 +73,7 @@ export class Skeleton {
         };
 
         let tile = this.map.tile(tip, direction);
-        if (tile != "W") {
+        if (tile != "W" && tile != "i") {
             this.position.x = newPosX;
             this.position.y = newPosY;
             //am.volume("CHEST_OPEN", 0);
@@ -123,7 +123,7 @@ export class Skeleton {
         }
     }
 
-    keyboard_event_up(key) {
+    keyboard_event_up() {
         this.speed.x = 0;
         this.speed.y = 0;
     }
@@ -133,15 +133,15 @@ export class Skeleton {
         myChestManager.chests.forEach((ori) => {
             distance = 0;
             distance = Math.sqrt(Math.pow(this.position.x - ori.position.x, 2) + Math.pow(this.position.y - ori.position.y, 2));
-
+            console.log(myChestManager.latestOpenedChest);
             if (distance < 30 && !ori.isChestOpen) {
 
                 switch (myChestManager.latestOpenedChest) {
                     case "":
                         ori.isChestOpen = true;
-                        myChestManager.latestOpenedChest = ori.id;
+                        myChestManager.latestOpenedChest = ori.value;
                         break
-                    case ori.id:
+                    case ori.value:
                         ori.isChestOpen = true;
                         myChestManager.latestOpenedChest = "";
                         break
@@ -149,7 +149,7 @@ export class Skeleton {
                         myChestManager.chests.forEach(e => e.isChestOpen = false);
                         myChestManager.latestOpenedChest = "";
                         ori.isChestOpen = true;
-                        myChestManager.latestOpenedChest = ori.id;
+                        myChestManager.latestOpenedChest = ori.value;
                         break
                 }
             }

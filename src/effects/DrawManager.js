@@ -36,7 +36,7 @@ class DrawManager {
       if (num) {
         ctx.drawImage(this.spritesheet, 0, 191, 9, 19, myPosition, 13, 20, 40);
       } else {
-        ctx.drawImage(this.spritesheet, 7, 191, 7, 19, myPosition + 18, 13, 20, 40);
+        ctx.drawImage(this.spritesheet, 7, 191, 7, 19, myPosition + 17, 13, 20, 40);
       }
 
     } else if (value == "BB") {
@@ -53,15 +53,6 @@ class DrawManager {
         ctx.drawImage(this.spritesheet, 39, 191, 10, 19, myPosition + 100, 13, 20, 40);
       }
     }
-  }
-  get_draw_skeleton(){
-
-  }
-  get_draw_gate(){
-
-  }
-  get_draw_torch(){
-
   }
 }
 export const myDrawManager = new DrawManager();

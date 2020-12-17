@@ -209,7 +209,7 @@ var DrawManager = /*#__PURE__*/function () {
         if (num) {
           ctx.drawImage(this.spritesheet, 0, 191, 9, 19, myPosition, 13, 20, 40);
         } else {
-          ctx.drawImage(this.spritesheet, 7, 191, 7, 19, myPosition + 18, 13, 20, 40);
+          ctx.drawImage(this.spritesheet, 7, 191, 7, 19, myPosition + 17, 13, 20, 40);
         }
       } else if (value == "BB") {
         if (num) {
@@ -225,15 +225,6 @@ var DrawManager = /*#__PURE__*/function () {
         }
       }
     }
-  }, {
-    key: "get_draw_skeleton",
-    value: function get_draw_skeleton() {}
-  }, {
-    key: "get_draw_gate",
-    value: function get_draw_gate() {}
-  }, {
-    key: "get_draw_torch",
-    value: function get_draw_torch() {}
   }]);
 
   return DrawManager;
@@ -319,8 +310,8 @@ var Chest = /*#__PURE__*/function () {
 }();
 
 exports.Chest = Chest;
-},{"../effects/DrawManager":"src/effects/DrawManager.js"}],"public/images/dungeonStuffs3.png":[function(require,module,exports) {
-module.exports = "/dungeonStuffs3.5ac8f1c2.png";
+},{"../effects/DrawManager":"src/effects/DrawManager.js"}],"public/images/dungeonWalls2.png":[function(require,module,exports) {
+module.exports = "/dungeonWalls2.bd66cb29.png";
 },{}],"src/actors/Map.js":[function(require,module,exports) {
 "use strict";
 
@@ -335,7 +326,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var dungeonMap = "\nWWWWWWWWWWWWWWWWWWWWWWWWWWWW\nW..S.........WW............W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW..........................W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW......WW....WW....WW......W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW.WWWW.WW..........WW.WWWW.W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW.WWWW.WW.W......W.WW.WWWW.W\nW.........W......W.........W\nW.WWWW.WW.W......W.WW.WWWW.W\nW.WWWW.WW.WWW..WWW.WW.WWWW.W\nW.WWWW.WW..........WW.WWWW.W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW............WW............W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW...WW................WW...W\nWWW.WW.WW.WWWWWWWW.WW.WW.WWW\nWWW.WW.WW.WWWWWWWW.WW.WW.WWW\nW......WW....WW....WW......W\nW.WWWWWWWWWW.WW.WWWWWWWWWW.W\nW.WWWWWWWWWW.WW.WWWWWWWWWW.W\nW..........................W\nWWWWWWWWWWWWWWWWWWWWWWWWWWWW\n";
+var dungeonMap = "\nWWWWWWWWWWWWWWWWWWWWWWWWWWWW\nW..S.........WW............W\nW.WWWW.iWWWi.WW.iWWWi.WWWW.W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW.WWWW.WWWWW.ii.WWWWW.WWWW.W\nW..........................W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW......WW....WW....WW......W\nW.iWWi.WWWWi.WW.iWWWW.iWWi.W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW.WWWW.WW..........WW.WWWW.W\nW.WWWW.WW.iWWWWWWi.WW.WWWW.W\nW.iWWi.WW.W......W.WW.iWWi.W\nW.........W......W.........W\nW.WWWW.WW.W......W.WW.WWWW.W\nW.WWWW.WW.WWi..iWW.WW.WWWW.W\nW.WWWW.WW..........WW.WWWW.W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW.WWWW.WW.WWWWWWWW.WW.WWWW.W\nW............WW............W\nW.iWWi.WWWWW.WW.WWWWW.iWWi.W\nW.WWWW.WWWWW.WW.WWWWW.WWWW.W\nW...WW................WW...W\nWWW.WW.WW.iWWWWWWi.WW.WW.WWW\nWWW.WW.WW.WWWWWWWW.WW.WW.WWW\nW......WW....WW....WW......W\nW.iWWWWWWWWW.WW.WWWWWWWWWi.W\nW.WWWWWWWWWW.WW.WWWWWWWWWW.W\nW..........................W\nWWWWWWWWWWWWWWWWWWWWWWWWWWWW\n";
 
 var Map = /*#__PURE__*/function () {
   function Map() {
@@ -344,7 +335,9 @@ var Map = /*#__PURE__*/function () {
     _classCallCheck(this, Map);
 
     this.spritesheet = new Image();
-    this.spritesheet.src = require("../../public/images/dungeonStuffs3.png");
+    this.spritesheet.src = require("../../public/images/dungeonStuffs4.png");
+    this.spritesheet2 = new Image();
+    this.spritesheet2.src = require("../../public/images/dungeonWalls2.png");
     this.position = {
       x: 0,
       y: 0
@@ -355,6 +348,8 @@ var Map = /*#__PURE__*/function () {
       return row.split("");
     });
     console.log("Map size", rows[0].length, this.map.length);
+    this.time = 0;
+    this.count = 0;
   }
 
   _createClass(Map, [{
@@ -436,6 +431,71 @@ var Map = /*#__PURE__*/function () {
       ctx.drawImage(this.spritesheet, frameSize.x, frameSize.y, 20, 18, this.position.x + j * this.tileSize, this.position.y + i * this.tileSize, 30, 30);
     }
   }, {
+    key: "draw_torch",
+    value: function draw_torch(delta, ctx, i, j) {
+      // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);  
+      var frameSize1 = {
+        x: 0,
+        y: 16
+      };
+      ctx.drawImage(this.spritesheet, frameSize1.x, frameSize1.y, 20, 18, this.position.x + j * this.tileSize, this.position.y + i * this.tileSize, 30, 30);
+      this.time += delta;
+      this.count = Math.floor(this.time / 10);
+
+      if (this.count > 6) {
+        this.time = 0;
+      } // this.framePos = Math.floor(this.time*8)
+      // let frameSize2 = { x: 127+17, y: 150 };
+      // if(this.framePos>2){
+      //   this.framePos = 0;
+      // }
+
+
+      var frameSize3 = [{
+        x: 129,
+        y: 150
+      }, {
+        x: 145,
+        y: 150
+      }, {
+        x: 161,
+        y: 150
+      }, {
+        x: 177,
+        y: 150
+      }, {
+        x: 193,
+        y: 150
+      }, {
+        x: 209,
+        y: 150
+      }, {
+        x: 225,
+        y: 150
+      }, {
+        x: 241,
+        y: 150
+      }]; // console.log(frameSize3[this.count])
+      // let frameSize2 = { x: 127 + 17, y: 150 };
+
+      var frameSize2 = frameSize3[this.count];
+      ctx.drawImage(this.spritesheet, frameSize2.x, frameSize2.y, 45, 80, this.position.x + j * this.tileSize, this.position.y + i * this.tileSize, 80, 90); // console.log(Math.floor(this.time * 8))
+    } // draw_door(ctx, i, j){
+    //   let frameSize = { x: 80, y: 80 };
+    //   ctx.drawImage(
+    //     this.spritesheet2,
+    //     frameSize.x,
+    //     frameSize.y,
+    //     20,
+    //     18,
+    //     this.position.x + j * this.tileSize,
+    //     this.position.y + i * this.tileSize,
+    //     30,
+    //     30
+    //   );
+    // }
+
+  }, {
     key: "keyboard_event",
     value: function keyboard_event() {}
   }, {
@@ -448,7 +508,9 @@ var Map = /*#__PURE__*/function () {
         for (var j = 0; j < this.map[i].length; j++) {
           var cell = this.map[i][j];
           if (cell == "W") this.draw_wall(ctx, i, j);
-          if (cell == "." || cell == "S") this.draw_floor(ctx, i, j); // if (cell == "*") this.draw_dot(ctx, i, j, "super");
+          if (cell == "i") this.draw_torch(delta, ctx, i, j);
+          if (cell == "." || cell == "S") this.draw_floor(ctx, i, j); // if (cell == "O") this.draw_door(ctx, i, j);
+          // if (cell == "*") this.draw_dot(ctx, i, j, "super");
         }
       }
     }
@@ -458,7 +520,7 @@ var Map = /*#__PURE__*/function () {
 }();
 
 exports.Map = Map;
-},{"../../public/images/dungeonStuffs3.png":"public/images/dungeonStuffs3.png"}],"src/actors/ChestManager.js":[function(require,module,exports) {
+},{"../../public/images/dungeonStuffs4.png":"public/images/dungeonStuffs4.png","../../public/images/dungeonWalls2.png":"public/images/dungeonWalls2.png"}],"src/actors/ChestManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -856,7 +918,7 @@ var Skeleton = /*#__PURE__*/function () {
       };
       var tile = this.map.tile(tip, direction);
 
-      if (tile != "W") {
+      if (tile != "W" && tile != "i") {
         this.position.x = newPosX;
         this.position.y = newPosY; //am.volume("CHEST_OPEN", 0);
       }
@@ -916,7 +978,7 @@ var Skeleton = /*#__PURE__*/function () {
     }
   }, {
     key: "keyboard_event_up",
-    value: function keyboard_event_up(key) {
+    value: function keyboard_event_up() {
       this.speed.x = 0;
       this.speed.y = 0;
     }
@@ -930,15 +992,16 @@ var Skeleton = /*#__PURE__*/function () {
       _ChestManager.myChestManager.chests.forEach(function (ori) {
         distance = 0;
         distance = Math.sqrt(Math.pow(_this.position.x - ori.position.x, 2) + Math.pow(_this.position.y - ori.position.y, 2));
+        console.log(_ChestManager.myChestManager.latestOpenedChest);
 
         if (distance < 30 && !ori.isChestOpen) {
           switch (_ChestManager.myChestManager.latestOpenedChest) {
             case "":
               ori.isChestOpen = true;
-              _ChestManager.myChestManager.latestOpenedChest = ori.id;
+              _ChestManager.myChestManager.latestOpenedChest = ori.value;
               break;
 
-            case ori.id:
+            case ori.value:
               ori.isChestOpen = true;
               _ChestManager.myChestManager.latestOpenedChest = "";
               break;
@@ -950,7 +1013,7 @@ var Skeleton = /*#__PURE__*/function () {
 
               _ChestManager.myChestManager.latestOpenedChest = "";
               ori.isChestOpen = true;
-              _ChestManager.myChestManager.latestOpenedChest = ori.id;
+              _ChestManager.myChestManager.latestOpenedChest = ori.value;
               break;
           }
         }
@@ -1075,7 +1138,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40185" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40965" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
