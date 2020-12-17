@@ -1,4 +1,5 @@
 import { myChestManager } from './ChestManager.js';
+import { myDrawManager } from '../effects/DrawManager';
 // import { am } from "../effects/AudioManager.js";
 export class Skeleton {
 
@@ -28,16 +29,14 @@ export class Skeleton {
         this.map = map;
     }
 
-    draw(delta, ctx) {
+    draw(delta, ctx) {        
 
         const frameSize = { x: 64, y: 64 };
-        // const seqName = `still-${this.currentSequence}`;
-        const seqName =
-            this.speed.x == 0 && this.speed.y == 0
-                ? `still-${this.currentSequence}`
-                : `moving-${this.currentSequence}`;
+        const seqName = this.speed.x == 0 && this.speed.y == 0 ? `still-${this.currentSequence}` : `moving-${this.currentSequence}`;
         const seq = this.sequences.find((s) => s.name == seqName);
         if (!seq) throw new Error("invalid seq");
+
+        // myDrawManager.get_draw_skeleton(ctx, "skeleton", "", this.position);
 
         ctx.drawImage(
             this.spritesheet,
@@ -45,14 +44,14 @@ export class Skeleton {
             frameSize.y * seq.ySeqPos,
             frameSize.x,
             frameSize.y,
-            this.position.x-20,
-            this.position.y-25,
+            this.position.x - 20,
+            this.position.y - 25,
             frameSize.x - 25,
             frameSize.y - 25
         );
 
         ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, 3, 0, 2*Math.PI);
+        ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
         ctx.closePath();
         ctx.fill();
 

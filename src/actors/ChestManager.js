@@ -4,12 +4,12 @@ class ChestManager {
     constructor() {
         this.chests = [
             //position,ID,num,head,color
-            new Chest(this.chest_start_options(), "AA", 375, "red", false),
-            new Chest(this.chest_start_options(), "AA", 380, "red", false),
-            new Chest(this.chest_start_options(), "BB", 410, "blue", false),
-            new Chest(this.chest_start_options(), "BB", 415, "blue", false),
-            new Chest(this.chest_start_options(), "CC", 445, "green", false),
-            new Chest(this.chest_start_options(), "CC", 450, "green", false)
+            new Chest(this.chest_start_options(), "AA", 0, false),
+            new Chest(this.chest_start_options(), "AA", 1, false),
+            new Chest(this.chest_start_options(), "BB", 0, false),
+            new Chest(this.chest_start_options(), "BB", 1, false),
+            new Chest(this.chest_start_options(), "CC", 0, false),
+            new Chest(this.chest_start_options(), "CC", 1, false)
         ];
         this.latestOpenedChest = "";
         return this

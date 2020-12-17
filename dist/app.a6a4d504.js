@@ -117,8 +117,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"public/images/dungeonStuffs3.png":[function(require,module,exports) {
-module.exports = "/dungeonStuffs3.5ac8f1c2.png";
+})({"public/images/dungeonStuffs4.png":[function(require,module,exports) {
+module.exports = "/dungeonStuffs4.748713d4.png";
 },{}],"src/effects/DrawManager.js":[function(require,module,exports) {
 "use strict";
 
@@ -138,37 +138,20 @@ var DrawManager = /*#__PURE__*/function () {
     _classCallCheck(this, DrawManager);
 
     this.spritesheet = new Image();
-    this.spritesheet.src = require("../../public/images/dungeonStuffs3.png");
+    this.spritesheet.src = require("../../public/images/dungeonStuffs4.png");
   }
 
   _createClass(DrawManager, [{
-    key: "get_draw",
-    value: function get_draw(ctx, picture, position) {
-      var helper = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+    key: "get_draw_elements",
+    value: function get_draw_elements(ctx, element, picture, position) {
       var sourcePos, sourceSize, destinationPos, destinationSize; // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);  
 
-      switch (picture) {
-        case "closedChest":
-          sourcePos = {
+      switch (element) {
+        case "chest":
+          picture == "closedChest" ? sourcePos = {
             x: 240,
             y: 174
-          };
-          sourceSize = {
-            x: 30,
-            y: 18
-          };
-          destinationPos = {
-            x: position.x - 12,
-            y: position.y - 18
-          };
-          destinationSize = {
-            x: 45,
-            y: 30
-          };
-          break;
-
-        case "openChest":
-          sourcePos = {
+          } : sourcePos = {
             x: 240,
             y: 208
           };
@@ -186,19 +169,71 @@ var DrawManager = /*#__PURE__*/function () {
           };
           break;
 
+        case "princess":
+          picture == "rock" ? sourcePos = {
+            x: 0,
+            y: 208
+          } : picture == "water" ? sourcePos = {
+            x: 16,
+            y: 208
+          } : sourcePos = {
+            x: 32,
+            y: 208
+          };
+          sourceSize = {
+            x: 19,
+            y: 18
+          };
+          destinationPos = {
+            x: position.x - 15,
+            y: position.y - 45
+          };
+          destinationSize = {
+            x: 40,
+            y: 30
+          };
+          break;
+
         default:
           break;
       }
 
       ctx.drawImage(this.spritesheet, sourcePos.x, sourcePos.y, sourceSize.x, sourceSize.y, destinationPos.x, destinationPos.y, destinationSize.x, destinationSize.y);
+    }
+  }, {
+    key: "get_draw_headers",
+    value: function get_draw_headers(ctx, value, num) {
+      var myPosition = 500;
 
-      if (helper) {
-        ctx.beginPath();
-        ctx.arc(position.x, position.y, 3, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fill();
+      if (value == "AA") {
+        if (num) {
+          ctx.drawImage(this.spritesheet, 0, 191, 9, 19, myPosition, 13, 20, 40);
+        } else {
+          ctx.drawImage(this.spritesheet, 7, 191, 7, 19, myPosition + 18, 13, 20, 40);
+        }
+      } else if (value == "BB") {
+        if (num) {
+          ctx.drawImage(this.spritesheet, 15, 191, 9, 19, myPosition + 40, 13, 20, 40);
+        } else {
+          ctx.drawImage(this.spritesheet, 21, 191, 10, 19, myPosition + 60, 13, 20, 40);
+        }
+      } else {
+        if (num) {
+          ctx.drawImage(this.spritesheet, 31, 191, 10, 19, myPosition + 80, 13, 20, 40);
+        } else {
+          ctx.drawImage(this.spritesheet, 39, 191, 10, 19, myPosition + 100, 13, 20, 40);
+        }
       }
     }
+  }, {
+    key: "get_draw_skeleton",
+    value: function get_draw_skeleton() {}
+  }, {
+    key: "get_draw_gate",
+    value: function get_draw_gate() {}
+  }, {
+    key: "get_draw_torch",
+    value: function get_draw_torch() {}
   }]);
 
   return DrawManager;
@@ -206,7 +241,7 @@ var DrawManager = /*#__PURE__*/function () {
 
 var myDrawManager = new DrawManager();
 exports.myDrawManager = myDrawManager;
-},{"../../public/images/dungeonStuffs3.png":"public/images/dungeonStuffs3.png"}],"src/actors/Chest.js":[function(require,module,exports) {
+},{"../../public/images/dungeonStuffs4.png":"public/images/dungeonStuffs4.png"}],"src/actors/Chest.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -223,7 +258,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Chest = /*#__PURE__*/function () {
-  function Chest(position, value, head, col, isChestOpen) {
+  function Chest(position, value, num, isChestOpen) {
     _classCallCheck(this, Chest);
 
     this.position = {
@@ -231,11 +266,8 @@ var Chest = /*#__PURE__*/function () {
       y: position.y
     };
     this.value = value;
-    this.head = head;
-    this.color = col;
+    this.num = num;
     this.isChestOpen = isChestOpen;
-    this.spritesheet = new Image();
-    this.spritesheet.src = require("../../public/images/dungeonStuffs3.png");
   }
 
   _createClass(Chest, [{
@@ -247,23 +279,39 @@ var Chest = /*#__PURE__*/function () {
   }, {
     key: "draw",
     value: function draw(delta, ctx) {
-      var chestStatus = "";
-      this.isChestOpen ? chestStatus = "openChest" : chestStatus = "closedChest";
+      if (this.isChestOpen) {
+        _DrawManager.myDrawManager.get_draw_elements(ctx, "chest", "openChest", this.position);
 
-      _DrawManager.myDrawManager.get_draw(ctx, chestStatus, this.position); // ctx.fillStyle = this.color;
-      // ctx.beginPath();
-      // ctx.arc(this.head, 13, 8, (1.5 * Math.PI), (0.5 * Math.PI), this.value % 2 ? false : true);
-      // ctx.closePath();
-      // this.isChestOpen === true ? ctx.fill() : ctx.stroke()
-      // if (this.isChestOpen) {
-      //     ctx.fillStyle = this.color;
-      //     ctx.beginPath();
-      //     ctx.arc(this.position.x + 15, this.position.y - 10, 8, (1.5 * Math.PI), (0.5 * Math.PI), this.value % 2 ? false : true);
-      //     ctx.closePath();
-      //     ctx.fill();
-      //     ctx.stroke()
-      // }
+        switch (this.value) {
+          case "AA":
+            _DrawManager.myDrawManager.get_draw_elements(ctx, "princess", "rock", this.position);
 
+            _DrawManager.myDrawManager.get_draw_headers(ctx, "AA", this.num);
+
+            break;
+
+          case "BB":
+            _DrawManager.myDrawManager.get_draw_elements(ctx, "princess", "water", this.position);
+
+            _DrawManager.myDrawManager.get_draw_headers(ctx, "BB", this.num);
+
+            break;
+
+          case "CC":
+            _DrawManager.myDrawManager.get_draw_elements(ctx, "princess", "fire", this.position);
+
+            _DrawManager.myDrawManager.get_draw_headers(ctx, "CC", this.num);
+
+            break;
+
+          default:
+            break;
+        }
+
+        ;
+      } else {
+        _DrawManager.myDrawManager.get_draw_elements(ctx, "chest", "closedChest", this.position);
+      }
     }
   }]);
 
@@ -271,7 +319,9 @@ var Chest = /*#__PURE__*/function () {
 }();
 
 exports.Chest = Chest;
-},{"../effects/DrawManager":"src/effects/DrawManager.js","../../public/images/dungeonStuffs3.png":"public/images/dungeonStuffs3.png"}],"src/actors/Map.js":[function(require,module,exports) {
+},{"../effects/DrawManager":"src/effects/DrawManager.js"}],"public/images/dungeonStuffs3.png":[function(require,module,exports) {
+module.exports = "/dungeonStuffs3.5ac8f1c2.png";
+},{}],"src/actors/Map.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -431,7 +481,7 @@ var ChestManager = /*#__PURE__*/function () {
     _classCallCheck(this, ChestManager);
 
     this.chests = [//position,ID,num,head,color
-    new _Chest.Chest(this.chest_start_options(), "AA", 375, "red", false), new _Chest.Chest(this.chest_start_options(), "AA", 380, "red", false), new _Chest.Chest(this.chest_start_options(), "BB", 410, "blue", false), new _Chest.Chest(this.chest_start_options(), "BB", 415, "blue", false), new _Chest.Chest(this.chest_start_options(), "CC", 445, "green", false), new _Chest.Chest(this.chest_start_options(), "CC", 450, "green", false)];
+    new _Chest.Chest(this.chest_start_options(), "AA", 0, false), new _Chest.Chest(this.chest_start_options(), "AA", 1, false), new _Chest.Chest(this.chest_start_options(), "BB", 0, false), new _Chest.Chest(this.chest_start_options(), "BB", 1, false), new _Chest.Chest(this.chest_start_options(), "CC", 0, false), new _Chest.Chest(this.chest_start_options(), "CC", 1, false)];
     this.latestOpenedChest = "";
     return this;
   }
@@ -708,6 +758,8 @@ exports.Skeleton = void 0;
 
 var _ChestManager = require("./ChestManager.js");
 
+var _DrawManager = require("../effects/DrawManager");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -777,13 +829,13 @@ var Skeleton = /*#__PURE__*/function () {
       var frameSize = {
         x: 64,
         y: 64
-      }; // const seqName = `still-${this.currentSequence}`;
-
+      };
       var seqName = this.speed.x == 0 && this.speed.y == 0 ? "still-".concat(this.currentSequence) : "moving-".concat(this.currentSequence);
       var seq = this.sequences.find(function (s) {
         return s.name == seqName;
       });
-      if (!seq) throw new Error("invalid seq");
+      if (!seq) throw new Error("invalid seq"); // myDrawManager.get_draw_skeleton(ctx, "skeleton", "", this.position);
+
       ctx.drawImage(this.spritesheet, frameSize.x * this.framePos, frameSize.y * seq.ySeqPos, frameSize.x, frameSize.y, this.position.x - 20, this.position.y - 25, frameSize.x - 25, frameSize.y - 25);
       ctx.beginPath();
       ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
@@ -910,7 +962,7 @@ var Skeleton = /*#__PURE__*/function () {
 }();
 
 exports.Skeleton = Skeleton;
-},{"./ChestManager.js":"src/actors/ChestManager.js","../../public/images/skeleton.png":"public/images/skeleton.png"}],"src/app.js":[function(require,module,exports) {
+},{"./ChestManager.js":"src/actors/ChestManager.js","../effects/DrawManager":"src/effects/DrawManager.js","../../public/images/skeleton.png":"public/images/skeleton.png"}],"src/app.js":[function(require,module,exports) {
 "use strict";
 
 var _ChestManager = require("./actors/ChestManager.js");
@@ -1023,7 +1075,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "32897" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40185" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
