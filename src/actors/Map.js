@@ -1,3 +1,4 @@
+import { myDrawManager } from '../effects/DrawManager';
 let dungeonMap = `
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W..S.........WW............W
@@ -101,109 +102,30 @@ export class Map {
   }
 
   draw_wall(ctx, i, j) {
-    let frameSize = { x: 0, y: 16 };
-    ctx.drawImage(
-      this.spritesheet,
-      frameSize.x,
-      frameSize.y,
-      20,
-      18,
-      this.position.x + j * this.tileSize,
-      this.position.y + i * this.tileSize,
-      30,
-      30
-    );
+    myDrawManager.get_draw_elements(ctx, "map", "wall", this.position, i, j, this.tileSize)
   }
 
   draw_floor(ctx, i, j) {
-    let frameSize = { x: 64, y: 96 };
-    ctx.drawImage(
-      this.spritesheet,
-      frameSize.x,
-      frameSize.y,
-      20,
-      18,
-      this.position.x + j * this.tileSize,
-      this.position.y + i * this.tileSize,
-      30,
-      30
-    );
+    myDrawManager.get_draw_elements(ctx, "map", "floor", this.position, i, j, this.tileSize)
   }
 
   draw_torch(delta, ctx, i, j) {
-    // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);  
-    let frameSize1 = { x: 0, y: 16 };
-    ctx.drawImage(
-      this.spritesheet,
-      frameSize1.x,
-      frameSize1.y,
-      20,
-      18,
-      this.position.x + j * this.tileSize,
-      this.position.y + i * this.tileSize,
-      30,
-      30
-    );
 
-    this.time += delta;
-    this.count = Math.floor(this.time/10);
+    this.draw_wall(ctx, i, j);
 
-    if (this.count > 6) {
-      this.time = 0;
-    }
-    // this.framePos = Math.floor(this.time*8)
-    // let frameSize2 = { x: 127+17, y: 150 };
-    // if(this.framePos>2){
-    //   this.framePos = 0;
-    // }
-
-    let frameSize3 = [
+    let frames = [
       { x: 129, y: 150 },
       { x: 145, y: 150 },
-      {x: 161, y: 150},
-      {x: 177, y: 150},
-      {x: 193, y: 150},
-      {x: 209, y: 150},
-      {x: 225, y: 150},
-      {x: 241, y: 150},
-    ];
-
-    // console.log(frameSize3[this.count])
-
-    // let frameSize2 = { x: 127 + 17, y: 150 };
-    let frameSize2 = frameSize3[this.count];
-
-    ctx.drawImage(
-      this.spritesheet,
-      frameSize2.x,
-      frameSize2.y,
-      45,
-      80,
-      this.position.x + j * this.tileSize,
-      this.position.y + i * this.tileSize,
-      80,
-      90
-    );
-
-
-    // console.log(Math.floor(this.time * 8))
+      { x: 161, y: 150 },
+      { x: 177, y: 150 },
+      { x: 193, y: 150 },
+      { x: 209, y: 150 },
+      { x: 225, y: 150 },
+      { x: 241, y: 150 },
+    ]; 
+    myDrawManager.get_draw_elements(ctx, "elem", "torch", this.position, i, j, this.tileSize, delta, frames);
 
   }
-
-  // draw_door(ctx, i, j){
-  //   let frameSize = { x: 80, y: 80 };
-  //   ctx.drawImage(
-  //     this.spritesheet2,
-  //     frameSize.x,
-  //     frameSize.y,
-  //     20,
-  //     18,
-  //     this.position.x + j * this.tileSize,
-  //     this.position.y + i * this.tileSize,
-  //     30,
-  //     30
-  //   );
-  // }
 
   keyboard_event() { }
   update() { }
@@ -217,7 +139,6 @@ export class Map {
         if (cell == "i") this.draw_torch(delta, ctx, i, j);
         if (cell == "." || cell == "S") this.draw_floor(ctx, i, j);
         // if (cell == "O") this.draw_door(ctx, i, j);
-        // if (cell == "*") this.draw_dot(ctx, i, j, "super");
       }
     }
   }

@@ -139,11 +139,18 @@ var DrawManager = /*#__PURE__*/function () {
 
     this.spritesheet = new Image();
     this.spritesheet.src = require("../../public/images/dungeonStuffs4.png");
+    this.render_torch_time = 0;
+    this.render_torch_count = 0;
   }
 
   _createClass(DrawManager, [{
     key: "get_draw_elements",
     value: function get_draw_elements(ctx, element, picture, position) {
+      var i = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+      var j = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
+      var tileSize = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 0;
+      var delta = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 0;
+      var frames = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : {};
       var sourcePos, sourceSize, destinationPos, destinationSize; // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);  
 
       switch (element) {
@@ -191,6 +198,54 @@ var DrawManager = /*#__PURE__*/function () {
           destinationSize = {
             x: 40,
             y: 30
+          };
+          break;
+
+        case "map":
+          picture == "wall" ? sourcePos = {
+            x: 0,
+            y: 16
+          } : sourcePos = {
+            x: 64,
+            y: 96
+          };
+          sourceSize = {
+            x: 20,
+            y: 18
+          };
+          destinationPos = {
+            x: position.x + j * tileSize,
+            y: position.y + i * tileSize
+          };
+          destinationSize = {
+            x: 30,
+            y: 30
+          };
+          break;
+
+        case "elem":
+          this.render_torch_time += delta;
+          this.render_torch_count = Math.floor(this.render_torch_time / 10);
+
+          if (this.render_torch_count > 6) {
+            this.render_torch_time = 0;
+          }
+
+          sourcePos = {
+            x: frames[this.render_torch_count].x,
+            y: frames[this.render_torch_count].y
+          };
+          sourceSize = {
+            x: 45,
+            y: 80
+          };
+          destinationPos = {
+            x: position.x + j * tileSize,
+            y: position.y + i * tileSize
+          };
+          destinationSize = {
+            x: 80,
+            y: 90
           };
           break;
 
@@ -320,6 +375,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Map = void 0;
 
+var _DrawManager = require("../effects/DrawManager");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -415,43 +472,18 @@ var Map = /*#__PURE__*/function () {
   }, {
     key: "draw_wall",
     value: function draw_wall(ctx, i, j) {
-      var frameSize = {
-        x: 0,
-        y: 16
-      };
-      ctx.drawImage(this.spritesheet, frameSize.x, frameSize.y, 20, 18, this.position.x + j * this.tileSize, this.position.y + i * this.tileSize, 30, 30);
+      _DrawManager.myDrawManager.get_draw_elements(ctx, "map", "wall", this.position, i, j, this.tileSize);
     }
   }, {
     key: "draw_floor",
     value: function draw_floor(ctx, i, j) {
-      var frameSize = {
-        x: 64,
-        y: 96
-      };
-      ctx.drawImage(this.spritesheet, frameSize.x, frameSize.y, 20, 18, this.position.x + j * this.tileSize, this.position.y + i * this.tileSize, 30, 30);
+      _DrawManager.myDrawManager.get_draw_elements(ctx, "map", "floor", this.position, i, j, this.tileSize);
     }
   }, {
     key: "draw_torch",
     value: function draw_torch(delta, ctx, i, j) {
-      // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);  
-      var frameSize1 = {
-        x: 0,
-        y: 16
-      };
-      ctx.drawImage(this.spritesheet, frameSize1.x, frameSize1.y, 20, 18, this.position.x + j * this.tileSize, this.position.y + i * this.tileSize, 30, 30);
-      this.time += delta;
-      this.count = Math.floor(this.time / 10);
-
-      if (this.count > 6) {
-        this.time = 0;
-      } // this.framePos = Math.floor(this.time*8)
-      // let frameSize2 = { x: 127+17, y: 150 };
-      // if(this.framePos>2){
-      //   this.framePos = 0;
-      // }
-
-
-      var frameSize3 = [{
+      this.draw_wall(ctx, i, j);
+      var frames = [{
         x: 129,
         y: 150
       }, {
@@ -475,26 +507,10 @@ var Map = /*#__PURE__*/function () {
       }, {
         x: 241,
         y: 150
-      }]; // console.log(frameSize3[this.count])
-      // let frameSize2 = { x: 127 + 17, y: 150 };
+      }];
 
-      var frameSize2 = frameSize3[this.count];
-      ctx.drawImage(this.spritesheet, frameSize2.x, frameSize2.y, 45, 80, this.position.x + j * this.tileSize, this.position.y + i * this.tileSize, 80, 90); // console.log(Math.floor(this.time * 8))
-    } // draw_door(ctx, i, j){
-    //   let frameSize = { x: 80, y: 80 };
-    //   ctx.drawImage(
-    //     this.spritesheet2,
-    //     frameSize.x,
-    //     frameSize.y,
-    //     20,
-    //     18,
-    //     this.position.x + j * this.tileSize,
-    //     this.position.y + i * this.tileSize,
-    //     30,
-    //     30
-    //   );
-    // }
-
+      _DrawManager.myDrawManager.get_draw_elements(ctx, "elem", "torch", this.position, i, j, this.tileSize, delta, frames);
+    }
   }, {
     key: "keyboard_event",
     value: function keyboard_event() {}
@@ -510,7 +526,6 @@ var Map = /*#__PURE__*/function () {
           if (cell == "W") this.draw_wall(ctx, i, j);
           if (cell == "i") this.draw_torch(delta, ctx, i, j);
           if (cell == "." || cell == "S") this.draw_floor(ctx, i, j); // if (cell == "O") this.draw_door(ctx, i, j);
-          // if (cell == "*") this.draw_dot(ctx, i, j, "super");
         }
       }
     }
@@ -520,7 +535,7 @@ var Map = /*#__PURE__*/function () {
 }();
 
 exports.Map = Map;
-},{"../../public/images/dungeonStuffs4.png":"public/images/dungeonStuffs4.png","../../public/images/dungeonWalls2.png":"public/images/dungeonWalls2.png"}],"src/actors/ChestManager.js":[function(require,module,exports) {
+},{"../effects/DrawManager":"src/effects/DrawManager.js","../../public/images/dungeonStuffs4.png":"public/images/dungeonStuffs4.png","../../public/images/dungeonWalls2.png":"public/images/dungeonWalls2.png"}],"src/actors/ChestManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1138,7 +1153,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40965" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42261" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

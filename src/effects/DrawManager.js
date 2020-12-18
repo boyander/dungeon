@@ -2,9 +2,12 @@ class DrawManager {
   constructor() {
     this.spritesheet = new Image();
     this.spritesheet.src = require("../../public/images/dungeonStuffs4.png");
+
+    this.render_torch_time = 0;
+    this.render_torch_count = 0;
   }
 
-  get_draw_elements(ctx, element, picture, position) {
+  get_draw_elements(ctx, element, picture, position, i = 0, j = 0, tileSize = 0, delta = 0, frames = {}) {
 
     let sourcePos, sourceSize, destinationPos, destinationSize;
     // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);  
@@ -21,6 +24,21 @@ class DrawManager {
         sourceSize = { x: 19, y: 18 };
         destinationPos = { x: (position.x - 15), y: (position.y - 45) };
         destinationSize = { x: 40, y: 30 };
+        break;
+      case "map":
+        picture == "wall" ? sourcePos = { x: 0, y: 16 } : sourcePos = { x: 64, y: 96 };
+        sourceSize = { x: 20, y: 18 };
+        destinationPos = { x: position.x + j * tileSize, y: position.y + i * tileSize }
+        destinationSize = { x: 30, y: 30 }
+        break;
+      case "elem":
+        this.render_torch_time += delta;
+        this.render_torch_count = Math.floor(this.render_torch_time / 10);    
+        if (this.render_torch_count > 6) { this.render_torch_time = 0; }
+        sourcePos = { x: (frames[this.render_torch_count].x), y: (frames[this.render_torch_count].y) };
+        sourceSize = { x: 45, y: 80 };
+        destinationPos = { x: position.x + j * tileSize, y: position.y + i * tileSize }
+        destinationSize = { x: 80, y: 90 }
         break;
       default:
 
