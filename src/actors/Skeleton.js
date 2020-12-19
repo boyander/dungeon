@@ -1,5 +1,4 @@
 import { myChestManager } from './ChestManager.js';
-import { myDrawManager } from '../effects/DrawManager';
 // import { am } from "../effects/AudioManager.js";
 export class Skeleton {
 
@@ -9,8 +8,6 @@ export class Skeleton {
 
         this.spritesheet = new Image();
         this.spritesheet.src = require("../../public/images/skeleton.png");
-        // this.spritesheet1 = new Image();
-        // this.spritesheet1.src = require("../../dungeon/public/images/index.jpeg");
         this.sequences = [
             { name: "still-down", numFrames: 2, ySeqPos: 2 },
             { name: "still-left", numFrames: 2, ySeqPos: 1 },
@@ -36,8 +33,7 @@ export class Skeleton {
         const seq = this.sequences.find((s) => s.name == seqName);
         if (!seq) throw new Error("invalid seq");
 
-        // myDrawManager.get_draw_skeleton(ctx, "skeleton", "", this.position);
-
+        // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight); 
         ctx.drawImage(
             this.spritesheet,
             frameSize.x * this.framePos,
@@ -50,15 +46,13 @@ export class Skeleton {
             frameSize.y - 25
         );
 
-        ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fill();
+        // ctx.beginPath();
+        // ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
+        // ctx.closePath();
+        // ctx.fill();
 
         this.time += delta;
         seq.numFrames == 2 ? this.framePos = Math.floor(this.time * 2) % seq.numFrames : this.framePos = Math.floor(this.time * 7) % seq.numFrames;
-
-        //am.playMuted();
     }
 
     update(deltaSeconds) {
@@ -76,7 +70,6 @@ export class Skeleton {
         if (tile != "W" && tile != "i") {
             this.position.x = newPosX;
             this.position.y = newPosY;
-            //am.volume("CHEST_OPEN", 0);
         }
     }
 
@@ -100,22 +93,18 @@ export class Skeleton {
             case "ArrowLeft":
                 this.currentSequence = "left";
                 this.speed.x = -100;
-                // this.position.x = this.position.x - this.speed;
                 break;
             case "ArrowRight":
                 this.currentSequence = "right";
                 this.speed.x = 100;
-                //this.position.x = this.position.x + this.speed;
                 break;
             case "ArrowUp":
                 this.currentSequence = "up";
                 this.speed.y = -100;
-                // this.position.y = this.position.y - this.speed;
                 break;
             case "ArrowDown":
                 this.currentSequence = "down";
                 this.speed.y = 100;
-                // this.position.y = this.position.y + this.speed;
                 break;
             case "a":
                 this.open();

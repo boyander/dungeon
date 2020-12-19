@@ -25,13 +25,13 @@ class DrawManager {
         destinationPos = { x: (position.x - 15), y: (position.y - 45) };
         destinationSize = { x: 40, y: 30 };
         break;
-      case "map":
+      case "container":
         picture == "wall" ? sourcePos = { x: 0, y: 16 } : sourcePos = { x: 64, y: 96 };
         sourceSize = { x: 20, y: 18 };
         destinationPos = { x: position.x + j * tileSize, y: position.y + i * tileSize }
         destinationSize = { x: 30, y: 30 }
         break;
-      case "elem":
+      case "content":
         this.render_torch_time += delta;
         this.render_torch_count = Math.floor(this.render_torch_time / 10);    
         if (this.render_torch_count > 6) { this.render_torch_time = 0; }

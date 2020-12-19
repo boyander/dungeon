@@ -66,7 +66,7 @@ export class Map {
     throw new Error("Set the S for pacman start");
   }
 
-  get_chests_start_options() {
+  get_random_locations() {
     let availablePositions = [];
     for (let i = 0; i < this.map.length; i++) {
       for (let j = 0; j < this.map[i].length; j++) {
@@ -102,11 +102,11 @@ export class Map {
   }
 
   draw_wall(ctx, i, j) {
-    myDrawManager.get_draw_elements(ctx, "map", "wall", this.position, i, j, this.tileSize)
+    myDrawManager.get_draw_elements(ctx, "container", "wall", this.position, i, j, this.tileSize)
   }
 
   draw_floor(ctx, i, j) {
-    myDrawManager.get_draw_elements(ctx, "map", "floor", this.position, i, j, this.tileSize)
+    myDrawManager.get_draw_elements(ctx, "container", "floor", this.position, i, j, this.tileSize)
   }
 
   draw_torch(delta, ctx, i, j) {
@@ -123,7 +123,7 @@ export class Map {
       { x: 225, y: 150 },
       { x: 241, y: 150 },
     ]; 
-    myDrawManager.get_draw_elements(ctx, "elem", "torch", this.position, i, j, this.tileSize, delta, frames);
+    myDrawManager.get_draw_elements(ctx, "content", "torch", this.position, i, j, this.tileSize, delta, frames);
 
   }
 

@@ -10,12 +10,12 @@ export class AudioStatus {
 
   }
   draw(delta, ctx) {
-    ctx.font = "15px Arial";
-    ctx.fillStyle = "white";
-    ctx.fillText(
-      `Mute: ${myAudioManager.globalMute}`,
-      this.position.x,
-      this.position.y
-    );
+    // ctx.font = "15px Arial";
+    // ctx.fillStyle = "white";
+    // ctx.fillText(
+    //   `Mute: ${myAudioManager.globalMute}`,
+    //   this.position.x,
+    //   this.position.y
+    // );
   }
 }

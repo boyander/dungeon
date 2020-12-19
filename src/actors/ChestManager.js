@@ -26,7 +26,7 @@ class ChestManager {
     chest_start_options() {
         const map = new Map;
         let availablePositions = [];
-        availablePositions = map.get_chests_start_options();
+        availablePositions = map.get_random_locations();
         let random = 0;
         random = Math.floor(Math.random() * availablePositions.length);
         return availablePositions[random]

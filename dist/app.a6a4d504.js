@@ -201,7 +201,7 @@ var DrawManager = /*#__PURE__*/function () {
           };
           break;
 
-        case "map":
+        case "container":
           picture == "wall" ? sourcePos = {
             x: 0,
             y: 16
@@ -223,7 +223,7 @@ var DrawManager = /*#__PURE__*/function () {
           };
           break;
 
-        case "elem":
+        case "content":
           this.render_torch_time += delta;
           this.render_torch_count = Math.floor(this.render_torch_time / 10);
 
@@ -426,8 +426,8 @@ var Map = /*#__PURE__*/function () {
       throw new Error("Set the S for pacman start");
     }
   }, {
-    key: "get_chests_start_options",
-    value: function get_chests_start_options() {
+    key: "get_random_locations",
+    value: function get_random_locations() {
       var availablePositions = [];
 
       for (var i = 0; i < this.map.length; i++) {
@@ -472,12 +472,12 @@ var Map = /*#__PURE__*/function () {
   }, {
     key: "draw_wall",
     value: function draw_wall(ctx, i, j) {
-      _DrawManager.myDrawManager.get_draw_elements(ctx, "map", "wall", this.position, i, j, this.tileSize);
+      _DrawManager.myDrawManager.get_draw_elements(ctx, "container", "wall", this.position, i, j, this.tileSize);
     }
   }, {
     key: "draw_floor",
     value: function draw_floor(ctx, i, j) {
-      _DrawManager.myDrawManager.get_draw_elements(ctx, "map", "floor", this.position, i, j, this.tileSize);
+      _DrawManager.myDrawManager.get_draw_elements(ctx, "container", "floor", this.position, i, j, this.tileSize);
     }
   }, {
     key: "draw_torch",
@@ -509,7 +509,7 @@ var Map = /*#__PURE__*/function () {
         y: 150
       }];
 
-      _DrawManager.myDrawManager.get_draw_elements(ctx, "elem", "torch", this.position, i, j, this.tileSize, delta, frames);
+      _DrawManager.myDrawManager.get_draw_elements(ctx, "content", "torch", this.position, i, j, this.tileSize, delta, frames);
     }
   }, {
     key: "keyboard_event",
@@ -577,7 +577,7 @@ var ChestManager = /*#__PURE__*/function () {
     value: function chest_start_options() {
       var map = new _Map.Map();
       var availablePositions = [];
-      availablePositions = map.get_chests_start_options();
+      availablePositions = map.get_random_locations();
       var random = 0;
       random = Math.floor(Math.random() * availablePositions.length);
       return availablePositions[random];
@@ -589,7 +589,219 @@ var ChestManager = /*#__PURE__*/function () {
 
 var myChestManager = new ChestManager();
 exports.myChestManager = myChestManager;
-},{"./Chest.js":"src/actors/Chest.js","./Map.js":"src/actors/Map.js"}],"src/actors/FPSViewer.js":[function(require,module,exports) {
+},{"./Chest.js":"src/actors/Chest.js","./Map.js":"src/actors/Map.js"}],"public/images/link.png":[function(require,module,exports) {
+module.exports = "/link.3b58ff61.png";
+},{}],"src/actors/Hero.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Hero = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var Hero = /*#__PURE__*/function () {
+  function Hero(position, map) {
+    _classCallCheck(this, Hero);
+
+    _defineProperty(this, "framePos", 0);
+
+    _defineProperty(this, "time", 0);
+
+    this.position = {
+      x: position.x,
+      y: position.y
+    };
+    this.heroSize = 10;
+    this.spritesheet = new Image();
+    this.spritesheet.src = require("../../public/images/link.png");
+    this.sequences = [{
+      name: "still-down",
+      numFrames: 1,
+      ySeqPos: 0
+    }, {
+      name: "still-left",
+      numFrames: 1,
+      ySeqPos: 1
+    }, {
+      name: "still-up",
+      numFrames: 1,
+      ySeqPos: 2
+    }, {
+      name: "still-right",
+      numFrames: 1,
+      ySeqPos: 3
+    }, {
+      name: "moving-down",
+      numFrames: 10,
+      ySeqPos: 4
+    }, {
+      name: "moving-left",
+      numFrames: 10,
+      ySeqPos: 5
+    }, {
+      name: "moving-up",
+      numFrames: 10,
+      ySeqPos: 6
+    }, {
+      name: "moving-right",
+      numFrames: 10,
+      ySeqPos: 7
+    }];
+    this.framePos = 0;
+    this.time = 0;
+    this.currentSequence = "down";
+    this.speed = {
+      x: 0,
+      y: 0
+    };
+    this.map = map;
+  }
+
+  _createClass(Hero, [{
+    key: "draw",
+    value: function draw(delta, ctx) {
+      var frameSize = {
+        x: 120,
+        y: 130
+      };
+      var seqName = this.speed.x == 0 && this.speed.y == 0 ? "still-".concat(this.currentSequence) : "moving-".concat(this.currentSequence);
+      var seq = this.sequences.find(function (s) {
+        return s.name == seqName;
+      });
+      if (!seq) throw new Error("invalid seq");
+      ctx.drawImage(this.spritesheet, frameSize.x * this.framePos, frameSize.y * seq.ySeqPos, frameSize.x, frameSize.y, this.position.x - 12, this.position.y - 23, frameSize.x - 95, frameSize.y - 95);
+      this.time += delta;
+      seq.numFrames == 1 ? this.framePos = Math.floor(this.time * 3) % seq.numFrames : this.framePos = Math.floor(this.time * 10) % seq.numFrames; // ctx.beginPath();
+      // ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
+      // ctx.closePath();
+      // ctx.fill();
+    }
+  }, {
+    key: "update",
+    value: function update(deltaSeconds) {
+      this.speed.x = this.speed.x + 10; // let hypoDirections = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+      // let direction = [];
+      // let tip = {};
+      // for (let i = 0; i < hypoDirections.length; i++) {
+      //     direction[i];
+      //     tip = {
+      //         x: this.position.x - direction[0] * this.heroSize,
+      //         y: this.position.y - direction[1] * this.heroSize,
+      //     };
+      //     let tile = this.map.tile(tip, direction);
+      //     if (tile != "W" && tile != "i") {
+      //         // console.log(i);
+      //     }
+      // }
+      // let newPosX = (this.position.x + this.speed.x * deltaSeconds);
+      // let newPosY = (this.position.y + this.speed.y * deltaSeconds);
+      // let direction = this.get_direction();
+      // let tip = {
+      //     x: this.position.x - direction[0] * this.heroSize,
+      //     y: this.position.y - direction[1] * this.heroSize,
+      // };
+      // let tile = this.map.tile(tip, direction);
+      // if (tile != "W" && tile != "i") {
+      //     this.position.x = newPosX;
+      //     this.position.y = newPosY;
+      // }
+    }
+  }, {
+    key: "get_direction",
+    value: function get_direction() {
+      // Calculate direction based on speed
+      var direction = [1, 0];
+
+      if (this.speed.x != 0 && this.speed.x < 0) {
+        direction = [-1, 0];
+      }
+
+      if (this.speed.y != 0 && this.speed.y > 0) {
+        direction = [0, 1];
+      }
+
+      if (this.speed.y != 0 && this.speed.y < 0) {
+        direction = [0, -1];
+      }
+
+      return direction;
+    }
+  }, {
+    key: "keyboard_event",
+    value: function keyboard_event(key) {}
+  }, {
+    key: "keyboard_event_up",
+    value: function keyboard_event_up() {}
+  }]);
+
+  return Hero;
+}();
+
+exports.Hero = Hero;
+},{"../../public/images/link.png":"public/images/link.png"}],"src/actors/HeroManager.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.myHeroManager = void 0;
+
+var _Hero = require("./Hero.js");
+
+var _Map = require("./Map.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var HeroManager = /*#__PURE__*/function () {
+  function HeroManager() {
+    _classCallCheck(this, HeroManager);
+
+    this.heroes = [//position,ID,num,head,color
+    new _Hero.Hero(this.hero_start_options(), new _Map.Map()), new _Hero.Hero(this.hero_start_options(), new _Map.Map()), new _Hero.Hero(this.hero_start_options(), new _Map.Map()), new _Hero.Hero(this.hero_start_options(), new _Map.Map()) // new Hero(this.hero_start_options(), new Map()),
+    ]; // this.latestOpenedChest = "";
+
+    return this;
+  }
+
+  _createClass(HeroManager, [{
+    key: "update",
+    value: function update(deltaSeconds) {}
+  }, {
+    key: "keyboard_event",
+    value: function keyboard_event(key) {}
+  }, {
+    key: "draw",
+    value: function draw(delta, ctx) {}
+  }, {
+    key: "hero_start_options",
+    value: function hero_start_options() {
+      var map = new _Map.Map();
+      var availablePositions = [];
+      availablePositions = map.get_random_locations();
+      var random = 0;
+      random = Math.floor(Math.random() * availablePositions.length);
+      return availablePositions[random];
+    }
+  }]);
+
+  return HeroManager;
+}();
+
+var myHeroManager = new HeroManager();
+exports.myHeroManager = myHeroManager;
+},{"./Hero.js":"src/actors/Hero.js","./Map.js":"src/actors/Map.js"}],"src/actors/FPSViewer.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -691,95 +903,12 @@ exports.myAudioManager = exports.AudioManager = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// export class GAMEAUDIO {
-//   DANGEUN_SOUND;
-//   CHEST_OPEN;
-//   CHEST_CLOSED;
-// }
-// let AUDIO_EFFECTS = [
-//   {
-//     name: "DANGEUN_SOUND",
-//     url: require("../../src/effects/ambience-creepyatmosfear.wav"),
-//   },
-//   {
-//     name: "CHEST_OPEN",
-//     url: require("../../src/effects/ambience-creepyatmosfear.wav"),
-//   },
-//   {
-//     name: "CHEST_CLOSED",
-//     url: require("../../src/effects/ambience-creepyatmosfear.wav"),
-//   },
-// ];
-// interface AudioEffect {
-//     name: GAMEAUDIO;
-//     el: HTMLAudioElement;
-// }
-var AudioManager = // effects: AudioEffect[];
-// globalMute: boolean;
-function AudioManager() {
+var AudioManager = function AudioManager() {
   _classCallCheck(this, AudioManager);
-
-  this.globalMute = false; // Cargamos todos los archivos como objetos Audio
-  // this.effects = AUDIO_EFFECTS.map((effect) => {
-  //   let el = new Audio(effect.url);
-  //   el.loop = true;
-  //   el.volume = 0;
-  //   el.autoplay = true
-  //   return {
-  //     name: effect.name,
-  //     el,
-  //   };
-  // });
-} //   play() {
-//     var audioElement = new Audio();
-//     audioElement.src = '../../src/effects/ambience-creepyatmosfear.wav'
-//     console.log('src',audioElement.src); // ""
-//     console.log('vol',audioElement.volume); // 1
-//     audioElement.volume = 1;
-//     audioElement.play().then(() => console.log(`Playing audio`)).catch((e) => console.log("Cannot start audio because browser protects it"));
-//     // const effect = this.effects[0];
-//     // effect.volume = 1;
-//     // console.log(effect.volume)
-//     // console.log(effect);
-//     // effect.el.play().then(() => console.log(`Playing audio`)).catch((e) => console.log("Cannot start audio because browser protects it"));
-//   }
-//   // toggleMute() {    
-//   //   this.globalMute = !this.globalMute;
-//   //   if (this.globalMute) {
-//   //     this.effects.forEach((eff) => {
-//   //       eff.el.volume = 0;
-//   //     });
-//   //   }
-//   // }
-//   // play(audiotrack) {    
-//   //   const effect = this.effects[0];
-//   //   effect?.el
-//   //     .play()
-//   //     .then(() => console.log(`Playing audio`))
-//   //     .catch((e) =>
-//   //       console.log("Cannot start audio because browser protects it")
-//   //     );
-//   // }
-//   // playMuted() {
-//   //   for (let track of AUDIO_EFFECTS) {
-//   //     this.play(track);
-//   //     this.volume(track, 100);
-//   //   }
-//   // }
-//   // volume(audiotrack, vol) {
-//   //   // If mute is active do nothing;
-//   //   if (this.globalMute) return;
-//   //   // Else, set the volume of track
-//   //   const effect = this.effects.find((eff) => eff.name == audiotrack);
-//   //   if (effect) {
-//   //     effect.volume = vol;
-//   //   }
-//   // }
-;
+};
 
 exports.AudioManager = AudioManager;
-var myAudioManager = new AudioManager(); // // export const ga = new GAMEAUDIO();
-
+var myAudioManager = new AudioManager();
 exports.myAudioManager = myAudioManager;
 },{}],"src/actors/AudioStatus.js":[function(require,module,exports) {
 "use strict";
@@ -812,10 +941,13 @@ var AudioStatus = /*#__PURE__*/function () {
     value: function update() {}
   }, {
     key: "draw",
-    value: function draw(delta, ctx) {
-      ctx.font = "15px Arial";
-      ctx.fillStyle = "white";
-      ctx.fillText("Mute: ".concat(_AudioManager.myAudioManager.globalMute), this.position.x, this.position.y);
+    value: function draw(delta, ctx) {// ctx.font = "15px Arial";
+      // ctx.fillStyle = "white";
+      // ctx.fillText(
+      //   `Mute: ${myAudioManager.globalMute}`,
+      //   this.position.x,
+      //   this.position.y
+      // );
     }
   }]);
 
@@ -835,8 +967,6 @@ exports.Skeleton = void 0;
 
 var _ChestManager = require("./ChestManager.js");
 
-var _DrawManager = require("../effects/DrawManager");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -854,9 +984,7 @@ var Skeleton = /*#__PURE__*/function () {
     };
     this.skeletonSize = 10;
     this.spritesheet = new Image();
-    this.spritesheet.src = require("../../public/images/skeleton.png"); // this.spritesheet1 = new Image();
-    // this.spritesheet1.src = require("../../dungeon/public/images/index.jpeg");
-
+    this.spritesheet.src = require("../../public/images/skeleton.png");
     this.sequences = [{
       name: "still-down",
       numFrames: 2,
@@ -911,15 +1039,15 @@ var Skeleton = /*#__PURE__*/function () {
       var seq = this.sequences.find(function (s) {
         return s.name == seqName;
       });
-      if (!seq) throw new Error("invalid seq"); // myDrawManager.get_draw_skeleton(ctx, "skeleton", "", this.position);
+      if (!seq) throw new Error("invalid seq"); // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight); 
 
-      ctx.drawImage(this.spritesheet, frameSize.x * this.framePos, frameSize.y * seq.ySeqPos, frameSize.x, frameSize.y, this.position.x - 20, this.position.y - 25, frameSize.x - 25, frameSize.y - 25);
-      ctx.beginPath();
-      ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
-      ctx.closePath();
-      ctx.fill();
+      ctx.drawImage(this.spritesheet, frameSize.x * this.framePos, frameSize.y * seq.ySeqPos, frameSize.x, frameSize.y, this.position.x - 20, this.position.y - 25, frameSize.x - 25, frameSize.y - 25); // ctx.beginPath();
+      // ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
+      // ctx.closePath();
+      // ctx.fill();
+
       this.time += delta;
-      seq.numFrames == 2 ? this.framePos = Math.floor(this.time * 2) % seq.numFrames : this.framePos = Math.floor(this.time * 7) % seq.numFrames; //am.playMuted();
+      seq.numFrames == 2 ? this.framePos = Math.floor(this.time * 2) % seq.numFrames : this.framePos = Math.floor(this.time * 7) % seq.numFrames;
     }
   }, {
     key: "update",
@@ -935,7 +1063,7 @@ var Skeleton = /*#__PURE__*/function () {
 
       if (tile != "W" && tile != "i") {
         this.position.x = newPosX;
-        this.position.y = newPosY; //am.volume("CHEST_OPEN", 0);
+        this.position.y = newPosY;
       }
     }
   }, {
@@ -964,26 +1092,22 @@ var Skeleton = /*#__PURE__*/function () {
       switch (key) {
         case "ArrowLeft":
           this.currentSequence = "left";
-          this.speed.x = -100; // this.position.x = this.position.x - this.speed;
-
+          this.speed.x = -100;
           break;
 
         case "ArrowRight":
           this.currentSequence = "right";
-          this.speed.x = 100; //this.position.x = this.position.x + this.speed;
-
+          this.speed.x = 100;
           break;
 
         case "ArrowUp":
           this.currentSequence = "up";
-          this.speed.y = -100; // this.position.y = this.position.y - this.speed;
-
+          this.speed.y = -100;
           break;
 
         case "ArrowDown":
           this.currentSequence = "down";
-          this.speed.y = 100; // this.position.y = this.position.y + this.speed;
-
+          this.speed.y = 100;
           break;
 
         case "a":
@@ -1040,10 +1164,12 @@ var Skeleton = /*#__PURE__*/function () {
 }();
 
 exports.Skeleton = Skeleton;
-},{"./ChestManager.js":"src/actors/ChestManager.js","../effects/DrawManager":"src/effects/DrawManager.js","../../public/images/skeleton.png":"public/images/skeleton.png"}],"src/app.js":[function(require,module,exports) {
+},{"./ChestManager.js":"src/actors/ChestManager.js","../../public/images/skeleton.png":"public/images/skeleton.png"}],"src/app.js":[function(require,module,exports) {
 "use strict";
 
 var _ChestManager = require("./actors/ChestManager.js");
+
+var _HeroManager = require("./actors/HeroManager.js");
 
 var _FPSViewer = require("./actors/FPSViewer.js");
 
@@ -1071,9 +1197,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 window.onload = function () {
   console.log("ready");
   var canvas = document.getElementById("canvas");
-  var ctx = canvas.getContext("2d");
-  var numChest = 6; // canvas.onclick = () => { };
-  // Actors
+  var ctx = canvas.getContext("2d"); // Actors
 
   var map = new _Map.Map();
   var initialPos = map.get_dungeon_start();
@@ -1090,7 +1214,7 @@ window.onload = function () {
     y: 15
   });
   var skeleton = new _Skeleton.Skeleton(initialPos, map);
-  var actors = [map, fps, chrono, audio, skeleton].concat(_toConsumableArray(_ChestManager.myChestManager.chests)); // GAME LOOP -> BUCLE DE RENDERIZADO Y ACTUALIZACIÓN
+  var actors = [map, fps, chrono, audio, skeleton].concat(_toConsumableArray(_ChestManager.myChestManager.chests), _toConsumableArray(_HeroManager.myHeroManager.heroes)); // GAME LOOP -> BUCLE DE RENDERIZADO Y ACTUALIZACIÓN
 
   var lastFrame = 0;
 
@@ -1125,7 +1249,7 @@ window.onload = function () {
     });
   });
 };
-},{"./actors/ChestManager.js":"src/actors/ChestManager.js","./actors/FPSViewer.js":"src/actors/FPSViewer.js","./actors/Chronometer.js":"src/actors/Chronometer.js","./actors/AudioStatus.js":"src/actors/AudioStatus.js","./actors/Skeleton.js":"src/actors/Skeleton.js","./actors/Map.js":"src/actors/Map.js"}],"node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./actors/ChestManager.js":"src/actors/ChestManager.js","./actors/HeroManager.js":"src/actors/HeroManager.js","./actors/FPSViewer.js":"src/actors/FPSViewer.js","./actors/Chronometer.js":"src/actors/Chronometer.js","./actors/AudioStatus.js":"src/actors/AudioStatus.js","./actors/Skeleton.js":"src/actors/Skeleton.js","./actors/Map.js":"src/actors/Map.js"}],"node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1153,7 +1277,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46479" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34183" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
