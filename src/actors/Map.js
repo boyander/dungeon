@@ -123,6 +123,7 @@ export class Map {
       { x: 225, y: 150 },
       { x: 241, y: 150 },
     ]; 
+    
     myDrawManager.get_draw_elements(ctx, "content", "torch", this.position, i, j, this.tileSize, delta, frames);
 
   }

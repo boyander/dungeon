@@ -49,10 +49,11 @@ class DrawManager {
   get_draw_headers(ctx, value, num) {
 
     let myPosition = 500;
+    // REVISAR: ctx.translate(0,191);
 
     if (value == "AA") {
       if (num) {
-        ctx.drawImage(this.spritesheet, 0, 191, 9, 19, myPosition, 13, 20, 40);
+        ctx.drawImage(this.spritesheet, 0, 0, 9, 19, myPosition, 13, 20, 40);
       } else {
         ctx.drawImage(this.spritesheet, 7, 191, 7, 19, myPosition + 17, 13, 20, 40);
       }

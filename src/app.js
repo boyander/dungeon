@@ -17,6 +17,7 @@ window.onload = () => {
 
     // Actors
     let map = new Map();
+    myChestManager.set_map(map);
     let initialPos = map.get_dungeon_start();
 
     let fps = new FPSViewer({ x: 5, y: 15 });

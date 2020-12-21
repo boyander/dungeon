@@ -23,6 +23,8 @@ export class Hero {
         this.currentSequence = "down";
         this.speed = { x: 0, y: 0 };
 
+        this.current_direction = [];
+        
         this.map = map;
     }
 
@@ -47,62 +49,38 @@ export class Hero {
 
         this.time += delta;
         seq.numFrames == 1 ? this.framePos = Math.floor(this.time * 3) % seq.numFrames : this.framePos = Math.floor(this.time * 10) % seq.numFrames;
-
-        // ctx.beginPath();
-        // ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
-        // ctx.closePath();
-        // ctx.fill();
     }
 
     update(deltaSeconds) {
 
-        this.speed.x = this.speed.x+10;
+        // this.speed.x = this.speed.x+10;
 
-        // let hypoDirections = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-        // let direction = [];
-        // let tip = {};
+        const hypoDirections = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+        let direction = [];
+        let tip = {};
+        let abailables_directions = [];
 
-        // for (let i = 0; i < hypoDirections.length; i++) {
-        //     direction[i];
-        //     tip = {
-        //         x: this.position.x - direction[0] * this.heroSize,
-        //         y: this.position.y - direction[1] * this.heroSize,
-        //     };
-        //     let tile = this.map.tile(tip, direction);
-        //     if (tile != "W" && tile != "i") {
-        //         // console.log(i);
+        // if (!this.current_direction.length > 0) {   
+
+        //     for (let i = 0; i < hypoDirections.length; i++) {
+        //         direction = [];
+        //         direction.push(hypoDirections[i])
+        //         tip = {
+        //             x: this.position.x - direction[0] * this.heroSize,
+        //             y: this.position.y - direction[1] * this.heroSize,
+        //         };
+        //         let tile = this.map.tile(tip, direction);
+        //         // console.log(tile);
+        //         if (tile != "W" && tile != "i" && tile != false) {
+        //             abailables_directions.push(direction);
+        //         }
         //     }
         // }
 
-        // let newPosX = (this.position.x + this.speed.x * deltaSeconds);
-        // let newPosY = (this.position.y + this.speed.y * deltaSeconds);
-
-        // let direction = this.get_direction();
-        // let tip = {
-        //     x: this.position.x - direction[0] * this.heroSize,
-        //     y: this.position.y - direction[1] * this.heroSize,
-        // };
-
-        // let tile = this.map.tile(tip, direction);
-        // if (tile != "W" && tile != "i") {
-        //     this.position.x = newPosX;
-        //     this.position.y = newPosY;
-        // }
     }
 
     get_direction() {
-        // Calculate direction based on speed
-        let direction = [1, 0];
-        if (this.speed.x != 0 && this.speed.x < 0) {
-            direction = [-1, 0];
-        }
-        if (this.speed.y != 0 && this.speed.y > 0) {
-            direction = [0, 1];
-        }
-        if (this.speed.y != 0 && this.speed.y < 0) {
-            direction = [0, -1];
-        }
-        return direction;
+
     }
 
     keyboard_event(key) {

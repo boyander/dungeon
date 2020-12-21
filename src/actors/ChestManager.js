@@ -23,8 +23,11 @@ class ChestManager {
     draw(delta, ctx) {
 
     }
+    set_map(map){
+        this.map = map;
+    }
     chest_start_options() {
-        const map = new Map;
+        const map = new Map();
         let availablePositions = [];
         availablePositions = map.get_random_locations();
         let random = 0;

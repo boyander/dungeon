@@ -258,11 +258,11 @@ var DrawManager = /*#__PURE__*/function () {
   }, {
     key: "get_draw_headers",
     value: function get_draw_headers(ctx, value, num) {
-      var myPosition = 500;
+      var myPosition = 500; // REVISAR: ctx.translate(0,191);
 
       if (value == "AA") {
         if (num) {
-          ctx.drawImage(this.spritesheet, 0, 191, 9, 19, myPosition, 13, 20, 40);
+          ctx.drawImage(this.spritesheet, 0, 0, 9, 19, myPosition, 13, 20, 40);
         } else {
           ctx.drawImage(this.spritesheet, 7, 191, 7, 19, myPosition + 17, 13, 20, 40);
         }
@@ -573,6 +573,11 @@ var ChestManager = /*#__PURE__*/function () {
     key: "draw",
     value: function draw(delta, ctx) {}
   }, {
+    key: "set_map",
+    value: function set_map(map) {
+      this.map = map;
+    }
+  }, {
     key: "chest_start_options",
     value: function chest_start_options() {
       var map = new _Map.Map();
@@ -662,6 +667,7 @@ var Hero = /*#__PURE__*/function () {
       x: 0,
       y: 0
     };
+    this.current_direction = [];
     this.map = map;
   }
 
@@ -679,61 +685,34 @@ var Hero = /*#__PURE__*/function () {
       if (!seq) throw new Error("invalid seq");
       ctx.drawImage(this.spritesheet, frameSize.x * this.framePos, frameSize.y * seq.ySeqPos, frameSize.x, frameSize.y, this.position.x - 12, this.position.y - 23, frameSize.x - 95, frameSize.y - 95);
       this.time += delta;
-      seq.numFrames == 1 ? this.framePos = Math.floor(this.time * 3) % seq.numFrames : this.framePos = Math.floor(this.time * 10) % seq.numFrames; // ctx.beginPath();
-      // ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
-      // ctx.closePath();
-      // ctx.fill();
+      seq.numFrames == 1 ? this.framePos = Math.floor(this.time * 3) % seq.numFrames : this.framePos = Math.floor(this.time * 10) % seq.numFrames;
     }
   }, {
     key: "update",
     value: function update(deltaSeconds) {
-      this.speed.x = this.speed.x + 10; // let hypoDirections = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-      // let direction = [];
-      // let tip = {};
-      // for (let i = 0; i < hypoDirections.length; i++) {
-      //     direction[i];
-      //     tip = {
-      //         x: this.position.x - direction[0] * this.heroSize,
-      //         y: this.position.y - direction[1] * this.heroSize,
-      //     };
-      //     let tile = this.map.tile(tip, direction);
-      //     if (tile != "W" && tile != "i") {
-      //         // console.log(i);
+      // this.speed.x = this.speed.x+10;
+      var hypoDirections = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+      var direction = [];
+      var tip = {};
+      var abailables_directions = []; // if (!this.current_direction.length > 0) {   
+      //     for (let i = 0; i < hypoDirections.length; i++) {
+      //         direction = [];
+      //         direction.push(hypoDirections[i])
+      //         tip = {
+      //             x: this.position.x - direction[0] * this.heroSize,
+      //             y: this.position.y - direction[1] * this.heroSize,
+      //         };
+      //         let tile = this.map.tile(tip, direction);
+      //         // console.log(tile);
+      //         if (tile != "W" && tile != "i" && tile != false) {
+      //             abailables_directions.push(direction);
+      //         }
       //     }
-      // }
-      // let newPosX = (this.position.x + this.speed.x * deltaSeconds);
-      // let newPosY = (this.position.y + this.speed.y * deltaSeconds);
-      // let direction = this.get_direction();
-      // let tip = {
-      //     x: this.position.x - direction[0] * this.heroSize,
-      //     y: this.position.y - direction[1] * this.heroSize,
-      // };
-      // let tile = this.map.tile(tip, direction);
-      // if (tile != "W" && tile != "i") {
-      //     this.position.x = newPosX;
-      //     this.position.y = newPosY;
       // }
     }
   }, {
     key: "get_direction",
-    value: function get_direction() {
-      // Calculate direction based on speed
-      var direction = [1, 0];
-
-      if (this.speed.x != 0 && this.speed.x < 0) {
-        direction = [-1, 0];
-      }
-
-      if (this.speed.y != 0 && this.speed.y > 0) {
-        direction = [0, 1];
-      }
-
-      if (this.speed.y != 0 && this.speed.y < 0) {
-        direction = [0, -1];
-      }
-
-      return direction;
-    }
+    value: function get_direction() {}
   }, {
     key: "keyboard_event",
     value: function keyboard_event(key) {}
@@ -769,9 +748,7 @@ var HeroManager = /*#__PURE__*/function () {
     _classCallCheck(this, HeroManager);
 
     this.heroes = [//position,ID,num,head,color
-    new _Hero.Hero(this.hero_start_options(), new _Map.Map()), new _Hero.Hero(this.hero_start_options(), new _Map.Map()), new _Hero.Hero(this.hero_start_options(), new _Map.Map()), new _Hero.Hero(this.hero_start_options(), new _Map.Map()) // new Hero(this.hero_start_options(), new Map()),
-    ]; // this.latestOpenedChest = "";
-
+    new _Hero.Hero(this.hero_start_options(), new _Map.Map()), new _Hero.Hero(this.hero_start_options(), new _Map.Map()), new _Hero.Hero(this.hero_start_options(), new _Map.Map()), new _Hero.Hero(this.hero_start_options(), new _Map.Map())];
     return this;
   }
 
@@ -1200,6 +1177,9 @@ window.onload = function () {
   var ctx = canvas.getContext("2d"); // Actors
 
   var map = new _Map.Map();
+
+  _ChestManager.myChestManager.set_map(map);
+
   var initialPos = map.get_dungeon_start();
   var fps = new _FPSViewer.FPSViewer({
     x: 5,
@@ -1277,7 +1257,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34183" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39543" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

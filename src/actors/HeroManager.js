@@ -9,9 +9,7 @@ class HeroManager {
             new Hero(this.hero_start_options(), new Map()),
             new Hero(this.hero_start_options(), new Map()),
             new Hero(this.hero_start_options(), new Map()),
-            // new Hero(this.hero_start_options(), new Map()),
         ];
-        // this.latestOpenedChest = "";
         return this
     }
     update(deltaSeconds) {
