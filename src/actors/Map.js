@@ -1,5 +1,6 @@
-import { myDrawManager } from '../effects/DrawManager';
-let dungeonMap = `
+import { myDrawManager } from "../effects/DrawManager";
+
+const dungeonMap = `
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W..S.........WW............W
 W.WWWW.iWWWi.WW.iWWWi.WWWW.W
@@ -44,7 +45,7 @@ export class Map {
     this.position = { x: 0, y: 0 };
 
     this.tileSize = tileSize;
-    let rows = dungeonMap.trim().split("\n");
+    const rows = dungeonMap.trim().split("\n");
     this.map = rows.map((row) => row.split(""));
     console.log("Map size", rows[0].length, this.map.length);
 
@@ -67,11 +68,11 @@ export class Map {
   }
 
   get_random_locations() {
-    let availablePositions = [];
+    const availablePositions = [];
     for (let i = 0; i < this.map.length; i++) {
       for (let j = 0; j < this.map[i].length; j++) {
-        if (this.map[i][j] == ".") {
-          availablePositions.push({ x: this.position.x + this.tileSize * j + this.tileSize / 2, y: this.position.y + this.tileSize * i + this.tileSize / 2 })
+        if (this.map[i][j] === ".") {
+          availablePositions.push(this.tilePos(i, j));
         }
       }
     }
@@ -79,14 +80,14 @@ export class Map {
   }
 
   pos_to_tile(position) {
-    let i = Math.floor((position.x - this.position.x) / this.tileSize);
-    let j = Math.floor((position.y - this.position.y) / this.tileSize);
+    const i = Math.floor((position.x - this.position.x) / this.tileSize);
+    const j = Math.floor((position.y - this.position.y) / this.tileSize);
     return [j, i];
   }
 
   tile_at_index(tileIndex) {
     try {
-      let tile = this.map[tileIndex[0]][tileIndex[1]];
+      const tile = this.map[tileIndex[0]][tileIndex[1]];
       return tile;
     } catch (error) {
       console.log("out of bounds");
@@ -95,47 +96,40 @@ export class Map {
   }
 
   tile(position, direction) {
-    let tileIndex = this.pos_to_tile(position);
-    let facing = [tileIndex[0] + direction[1], tileIndex[1] + direction[0]];
-    let tile = this.tile_at_index(facing);
+    const tileIndex = this.pos_to_tile(position);
+    const facing = [tileIndex[0] + direction[1], tileIndex[1] + direction[0]];
+    const tile = this.tile_at_index(facing);
     return tile;
   }
 
+  tilePos(i, j) {
+    return {
+      x: this.position.x + j * this.tileSize,
+      y: this.position.y + i * this.tileSize,
+    };
+  }
+
   draw_wall(ctx, i, j) {
-    myDrawManager.get_draw_elements(ctx, "container", "wall", this.position, i, j, this.tileSize)
+    myDrawManager.get_draw_elements(ctx, "wall", this.tilePos(i, j));
   }
 
   draw_floor(ctx, i, j) {
-    myDrawManager.get_draw_elements(ctx, "container", "floor", this.position, i, j, this.tileSize)
+    myDrawManager.get_draw_elements(ctx, "floor", this.tilePos(i, j));
   }
 
   draw_torch(delta, ctx, i, j) {
-
     this.draw_wall(ctx, i, j);
-
-    let frames = [
-      { x: 129, y: 150 },
-      { x: 145, y: 150 },
-      { x: 161, y: 150 },
-      { x: 177, y: 150 },
-      { x: 193, y: 150 },
-      { x: 209, y: 150 },
-      { x: 225, y: 150 },
-      { x: 241, y: 150 },
-    ]; 
-    
-    myDrawManager.get_draw_elements(ctx, "content", "torch", this.position, i, j, this.tileSize, delta, frames);
-
+    myDrawManager.get_draw_elements(ctx, "torch", this.tilePos(i, j), delta);
   }
 
-  keyboard_event() { }
-  update() { }
+  keyboard_event() {}
+
+  update() {}
 
   draw(delta, ctx) {
-
     for (let i = 0; i < this.map.length; i++) {
       for (let j = 0; j < this.map[i].length; j++) {
-        let cell = this.map[i][j];
+        const cell = this.map[i][j];
         if (cell == "W") this.draw_wall(ctx, i, j);
         if (cell == "i") this.draw_torch(delta, ctx, i, j);
         if (cell == "." || cell == "S") this.draw_floor(ctx, i, j);

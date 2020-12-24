@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/**/*.js",
     "build": "parcel build index.html",
-    "dev":"parcel index.html",
+    "dev": "parcel index.html",
     "start": "parcel serve -p $PORT index.html"
   },
   "repository": {
@@ -21,5 +21,10 @@
   "homepage": "https://github.com/amargopastor/dungeon#readme",
   "dependencies": {
     "parcel": "^1.12.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.16.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
   }
 }
