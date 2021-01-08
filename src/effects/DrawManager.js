@@ -1,22 +1,22 @@
 const PICTURES = {
   rock: {
     sheet: "dungeon",
-    pos: { x: 0, y: 208 },
-    size: { x: 19, y: 18 },
+    pos: { x: 0, y: 207 },
+    size: { x: 18, y: 16 },
     dest: { x: 40, y: 30 },
     offset: { x: 0, y: 0 },
   },
   water: {
     sheet: "dungeon",
-    pos: { x: 16, y: 208 },
-    size: { x: 19, y: 18 },
+    pos: { x: 16, y: 207 },
+    size: { x: 18, y: 16 },
     dest: { x: 40, y: 30 },
     offset: { x: 0, y: 0 },
   },
   fire: {
     sheet: "dungeon",
-    pos: { x: 32, y: 208 },
-    size: { x: 19, y: 18 },
+    pos: { x: 32, y: 207 },
+    size: { x: 18, y: 16 },
     dest: { x: 40, y: 30 },
     offset: { x: 0, y: 0 },
   },
@@ -106,28 +106,28 @@ class DrawManager {
 
   drawHalf(ctx, objectName, position, half = false) {
     const {
-      pos, size, dest, offset
+      pos, size, dest, offset,
     } = this.getObject(objectName);
-
+    // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
     ctx.drawImage(
       SPRITESHEETS.dungeon,
       half ? pos.x + size.x / 2 : pos.x,
-      pos.y + size.y,
+      pos.y - size.y,
       size.x / 2,
       size.y,
-      position.x - offset.x,
-      position.y - offset.y,
+      half ? position.x + 38 - offset.x : position.x - offset.x,
+      position.y,
       dest.x,
       dest.y,
     );
   }
 
   getDrawHeaders(ctx, objectName, half) {
-    const headerPositionBase = { x: 10, y: 10 };
+    const headerPositionBase = { x: 450, y: 10 };
     const typeOffset = {
       rock: { x: 0, y: 0 },
-      fire: { x: 20, y: 0 },
-      water: { x: 40, y: 0 },
+      fire: { x: 50, y: 0 },
+      water: { x: 100, y: 0 },
     };
     this.drawHalf(
       ctx,
@@ -138,76 +138,6 @@ class DrawManager {
       },
       half,
     );
-    // const myPosition = 500;
-    // // REVISAR: ctx.translate(0,191);
-
-    // if (value == "AA") {
-    //   if (num) {
-    //     ctx.drawImage(this.spritesheet, 0, 0, 9, 19, myPosition, 13, 20, 40);
-    //   } else {
-    //     ctx.drawImage(
-    //       this.spritesheet,
-    //       7,
-    //       191,
-    //       7,
-    //       19,
-    //       myPosition + 17,
-    //       13,
-    //       20,
-    //       40
-    //     );
-    //   }
-    // } else if (value == "BB") {
-    //   if (num) {
-    //     ctx.drawImage(
-    //       this.spritesheet,
-    //       15,
-    //       191,
-    //       9,
-    //       19,
-    //       myPosition + 40,
-    //       13,
-    //       20,
-    //       40
-    //     );
-    //   } else {
-    //     ctx.drawImage(
-    //       this.spritesheet,
-    //       21,
-    //       191,
-    //       10,
-    //       19,
-    //       myPosition + 60,
-    //       13,
-    //       20,
-    //       40
-    //     );
-    //   }
-    // } else if (num) {
-    //   ctx.drawImage(
-    //     this.spritesheet,
-    //     31,
-    //     191,
-    //     10,
-    //     19,
-    //     myPosition + 80,
-    //     13,
-    //     20,
-    //     40
-    //   );
-    // } else {
-    //   ctx.drawImage(
-    //     this.spritesheet,
-    //     39,
-    //     191,
-    //     10,
-    //     19,
-    //     myPosition + 100,
-    //     13,
-    //     20,
-    //     40
-    //   );
-    // }
   }
 }
 export const myDrawManager = new DrawManager();

@@ -57,22 +57,19 @@ export class Map {
     for (let i = 0; i < this.map.length; i += 1) {
       for (let j = 0; j < this.map[i].length; j += 1) {
         if (this.map[i][j] === "S") {
-          return {
-            x: this.position.x + this.tileSize * j + this.tileSize / 2,
-            y: this.position.y + this.tileSize * i + this.tileSize / 2,
-          };
+          return this.editedTilePos(i, j);
         }
       }
     }
-    throw new Error("Set the S for pacman start");
+    throw new Error("Set the S for skeleton start");
   }
 
-  getRandomLocations() {
+  getRandomLocations(element) {
     const availablePositions = [];
     for (let i = 0; i < this.map.length; i += 1) {
       for (let j = 0; j < this.map[i].length; j += 1) {
         if (this.map[i][j] === ".") {
-          availablePositions.push(this.tilePos(i, j));
+          element === "chest" ? availablePositions.push(this.tilePos(i, j)) : availablePositions.push(this.editedTilePos(i, j))
         }
       }
     }
@@ -106,6 +103,13 @@ export class Map {
     return {
       x: this.position.x + j * this.tileSize,
       y: this.position.y + i * this.tileSize,
+    };
+  }
+
+  editedTilePos(i, j) {
+    return {
+      x: this.position.x + this.tileSize * j + this.tileSize / 2,
+      y: this.position.y + this.tileSize * i + this.tileSize / 2,
     };
   }
 

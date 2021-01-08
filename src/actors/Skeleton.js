@@ -44,10 +44,10 @@ export class Skeleton {
       frameSize.y - 25,
     );
 
-    // ctx.beginPath();
-    // ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
-    // ctx.closePath();
-    // ctx.fill();
+    ctx.beginPath();
+    ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
+    ctx.closePath();
+    ctx.fill();
 
     this.time += delta;
     seq.numFrames === 2 ? this.framePos = Math.floor(this.time * 2) % seq.numFrames : this.framePos = Math.floor(this.time * 7) % seq.numFrames;

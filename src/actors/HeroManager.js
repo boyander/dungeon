@@ -6,9 +6,9 @@ class HeroManager {
     this.heroes = [
     // position,ID,num,head,color
       new Hero(this.heroStartOptions(), new Map()),
-      new Hero(this.heroStartOptions(), new Map()),
-      new Hero(this.heroStartOptions(), new Map()),
-      new Hero(this.heroStartOptions(), new Map()),
+      // new Hero(this.heroStartOptions(), new Map()),
+      // new Hero(this.heroStartOptions(), new Map()),
+      // new Hero(this.heroStartOptions(), new Map()),
     ];
     return this;
   }
@@ -22,7 +22,7 @@ draw(delta, ctx) { }
 heroStartOptions() {
     const map = new Map();
     let availablePositions = [];
-    availablePositions = map.getRandomLocations();
+    availablePositions = map.getRandomLocations("hero");
     let random = 0;
     random = Math.floor(Math.random() * availablePositions.length);
     return availablePositions[random];
