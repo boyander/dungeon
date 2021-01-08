@@ -11,26 +11,26 @@ export class Chest {
 
   draw(delta, ctx) {
     if (this.isChestOpen) {
-      myDrawManager.get_draw_elements(ctx, "openChest", this.position, delta);
+      myDrawManager.getDrawElements(ctx, "openChest", this.position, delta);
       switch (this.value) {
         case "AA":
-          myDrawManager.get_draw_elements(ctx, "rock", this.position, delta);
-          myDrawManager.get_draw_headers(ctx, "rock", this.num);
+          myDrawManager.getDrawElements(ctx, "rock", this.position, delta);
+          myDrawManager.getDrawHeaders(ctx, "rock", this.num);
           break;
         case "BB":
-          myDrawManager.get_draw_elements(ctx, "water", this.position, delta);
-          myDrawManager.get_draw_headers(ctx, "water", this.num);
+          myDrawManager.getDrawElements(ctx, "water", this.position, delta);
+          myDrawManager.getDrawHeaders(ctx, "water", this.num);
           break;
         case "CC":
-          myDrawManager.get_draw_elements(ctx, "fire", this.position, delta);
-          myDrawManager.get_draw_headers(ctx, "fire", this.num);
+          myDrawManager.getDrawElements(ctx, "fire", this.position, delta);
+          myDrawManager.getDrawHeaders(ctx, "fire", this.num);
 
           break;
         default:
           break;
       }
     } else {
-      myDrawManager.get_draw_elements(ctx, "closedChest", this.position);
+      myDrawManager.getDrawElements(ctx, "closedChest", this.position);
     }
   }
 }

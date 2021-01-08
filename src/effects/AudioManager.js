@@ -1,7 +1,5 @@
 export class AudioManager {
-  constructor() {
-
-  }
+  constructor() { }
 }
 
 export const myAudioManager = new AudioManager();

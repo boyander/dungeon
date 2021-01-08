@@ -1,14 +1,18 @@
-import { myAudioManager } from "../effects/AudioManager.js";
+import { myAudioManager } from "../effects/AudioManager";
+
 export class AudioStatus {
   constructor(position) {
     this.position = position;
   }
-  keyboard_event() {
+
+  keyboardEvent() {
 
   }
+
   update() {
 
   }
+
   draw(delta, ctx) {
     // ctx.font = "15px Arial";
     // ctx.fillStyle = "white";

@@ -47,16 +47,16 @@ export class Map {
     this.tileSize = tileSize;
     const rows = dungeonMap.trim().split("\n");
     this.map = rows.map((row) => row.split(""));
-    console.log("Map size", rows[0].length, this.map.length);
+    // console.log("Map size", rows[0].length, this.map.length);
 
     this.time = 0;
     this.count = 0;
   }
 
-  get_dungeon_start() {
-    for (let i = 0; i < this.map.length; i++) {
-      for (let j = 0; j < this.map[i].length; j++) {
-        if (this.map[i][j] == "S") {
+  GetDungeonStart() {
+    for (let i = 0; i < this.map.length; i += 1) {
+      for (let j = 0; j < this.map[i].length; j += 1) {
+        if (this.map[i][j] === "S") {
           return {
             x: this.position.x + this.tileSize * j + this.tileSize / 2,
             y: this.position.y + this.tileSize * i + this.tileSize / 2,
@@ -67,10 +67,10 @@ export class Map {
     throw new Error("Set the S for pacman start");
   }
 
-  get_random_locations() {
+  getRandomLocations() {
     const availablePositions = [];
-    for (let i = 0; i < this.map.length; i++) {
-      for (let j = 0; j < this.map[i].length; j++) {
+    for (let i = 0; i < this.map.length; i += 1) {
+      for (let j = 0; j < this.map[i].length; j += 1) {
         if (this.map[i][j] === ".") {
           availablePositions.push(this.tilePos(i, j));
         }
@@ -79,26 +79,26 @@ export class Map {
     return availablePositions;
   }
 
-  pos_to_tile(position) {
+  posToTile(position) {
     const i = Math.floor((position.x - this.position.x) / this.tileSize);
     const j = Math.floor((position.y - this.position.y) / this.tileSize);
     return [j, i];
   }
 
-  tile_at_index(tileIndex) {
+  tileAtIndex(tileIndex) {
     try {
       const tile = this.map[tileIndex[0]][tileIndex[1]];
       return tile;
     } catch (error) {
-      console.log("out of bounds");
+      // console.log("out of bounds");
       return false;
     }
   }
 
   tile(position, direction) {
-    const tileIndex = this.pos_to_tile(position);
+    const tileIndex = this.posToTile(position);
     const facing = [tileIndex[0] + direction[1], tileIndex[1] + direction[0]];
-    const tile = this.tile_at_index(facing);
+    const tile = this.tileAtIndex(facing);
     return tile;
   }
 
@@ -109,30 +109,30 @@ export class Map {
     };
   }
 
-  draw_wall(ctx, i, j) {
-    myDrawManager.get_draw_elements(ctx, "wall", this.tilePos(i, j));
+  drawWall(ctx, i, j) {
+    myDrawManager.getDrawElements(ctx, "wall", this.tilePos(i, j));
   }
 
-  draw_floor(ctx, i, j) {
-    myDrawManager.get_draw_elements(ctx, "floor", this.tilePos(i, j));
+  drawFloor(ctx, i, j) {
+    myDrawManager.getDrawElements(ctx, "floor", this.tilePos(i, j));
   }
 
-  draw_torch(delta, ctx, i, j) {
-    this.draw_wall(ctx, i, j);
-    myDrawManager.get_draw_elements(ctx, "torch", this.tilePos(i, j), delta);
+  drawTorch(delta, ctx, i, j) {
+    this.drawWall(ctx, i, j);
+    myDrawManager.getDrawElements(ctx, "torch", this.tilePos(i, j), delta);
   }
 
-  keyboard_event() {}
+  keyboardEvent() { }
 
-  update() {}
+  update() { }
 
   draw(delta, ctx) {
-    for (let i = 0; i < this.map.length; i++) {
-      for (let j = 0; j < this.map[i].length; j++) {
+    for (let i = 0; i < this.map.length; i += 1) {
+      for (let j = 0; j < this.map[i].length; j += 1) {
         const cell = this.map[i][j];
-        if (cell == "W") this.draw_wall(ctx, i, j);
-        if (cell == "i") this.draw_torch(delta, ctx, i, j);
-        if (cell == "." || cell == "S") this.draw_floor(ctx, i, j);
+        if (cell === "W") this.drawWall(ctx, i, j);
+        if (cell === "i") this.drawTorch(delta, ctx, i, j);
+        if (cell === "." || cell === "S") this.drawFloor(ctx, i, j);
         // if (cell == "O") this.draw_door(ctx, i, j);
       }
     }

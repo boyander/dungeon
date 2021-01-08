@@ -1,18 +1,16 @@
 export class FPSViewer {
-    constructor(position) {
-        this.position = position;
-    }
+  constructor(position) {
+    this.position = position;
+  }
 
-    keyboard_event() {
+  keyboardEvent() { }
 
-    }
-    update() {
+  update() { }
 
-    }
-    draw(delta, ctx) {
-        const fps = (1 / delta).toFixed(2);
-        ctx.font = "15px Arial";
-        ctx.fillStyle = "white";
-        ctx.fillText(`FPS: ${fps}`, this.position.x, this.position.y);
-    }
+  draw(delta, ctx) {
+    const fps = (1 / delta).toFixed(2);
+    ctx.font = "15px Arial";
+    ctx.fillStyle = "white";
+    ctx.fillText(`FPS: ${fps}`, this.position.x, this.position.y);
+  }
 }

@@ -73,7 +73,7 @@ class DrawManager {
     this.render_torch_time = 0;
   }
 
-  get_object(objectName) {
+  getObject(objectName) {
     const objectToDraw = PICTURES[objectName];
     if (objectToDraw) {
       return objectToDraw;
@@ -82,13 +82,15 @@ class DrawManager {
   }
 
   // TODO: Animation offset must be different for each object instance
-  get_draw_elements(ctx, objectName, position, delta = 0, animationOffset = 0) {
+  getDrawElements(ctx, objectName, position, delta = 0, animationOffset = 0) {
     this.render_torch_time += delta;
-    const render_torch_count = Math.floor(
-      this.render_torch_time + animationOffset / 8
+    const getDrawElements = Math.floor(
+      this.render_torch_time + animationOffset / 8,
     );
-    const { pos, size, dest, frames, offset } = this.get_object(objectName);
-    const drawFrame = frames ? render_torch_count % frames : 0;
+    const {
+      pos, size, dest, frames, offset,
+    } = this.getObject(objectName);
+    const drawFrame = frames ? getDrawElements % frames : 0;
     ctx.drawImage(
       SPRITESHEETS.dungeon,
       pos.x + size.x * drawFrame,
@@ -98,12 +100,14 @@ class DrawManager {
       position.x - offset.x,
       position.y - offset.y,
       dest.x,
-      dest.y
+      dest.y,
     );
   }
 
-  draw_half(ctx, objectName, position, half = false) {
-    const { pos, size, dest, offset } = this.get_object(objectName);
+  drawHalf(ctx, objectName, position, half = false) {
+    const {
+      pos, size, dest, offset
+    } = this.getObject(objectName);
 
     ctx.drawImage(
       SPRITESHEETS.dungeon,
@@ -114,25 +118,25 @@ class DrawManager {
       position.x - offset.x,
       position.y - offset.y,
       dest.x,
-      dest.y
+      dest.y,
     );
   }
 
-  get_draw_headers(ctx, objectName, half) {
+  getDrawHeaders(ctx, objectName, half) {
     const headerPositionBase = { x: 10, y: 10 };
     const typeOffset = {
       rock: { x: 0, y: 0 },
       fire: { x: 20, y: 0 },
       water: { x: 40, y: 0 },
     };
-    this.draw_half(
+    this.drawHalf(
       ctx,
       objectName,
       {
         x: headerPositionBase.x + typeOffset[objectName].x,
         y: headerPositionBase.y + typeOffset[objectName].y,
       },
-      half
+      half,
     );
     // const myPosition = 500;
     // // REVISAR: ctx.translate(0,191);

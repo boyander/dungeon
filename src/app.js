@@ -1,33 +1,33 @@
-import { myChestManager } from "./actors/ChestManager.js";
-import { myHeroManager } from "./actors/HeroManager.js";
-import { FPSViewer } from "./actors/FPSViewer.js";
-import { Chronometer } from "./actors/Chronometer.js";
-import { AudioStatus } from "./actors/AudioStatus.js";
-import { Skeleton } from "./actors/Skeleton.js";
-import { Map } from "./actors/Map.js";
+import { myChestManager } from "./actors/ChestManager";
+import { myHeroManager } from "./actors/HeroManager";
+import { FPSViewer } from "./actors/FPSViewer";
+import { Chronometer } from "./actors/Chronometer";
+// import { AudioStatus } from "./actors/AudioStatus";
+import { Skeleton } from "./actors/Skeleton";
+import { Map } from "./actors/Map";
 // import { am } from "../src/effects/AudioManager.js";
 
 window.onload = () => {
-  console.log("ready");
+  // console.log("ready");
 
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
 
   // Actors
   const map = new Map();
-  myChestManager.set_map(map);
-  const initialPos = map.get_dungeon_start();
+  myChestManager.setMap(map);
+  const initialPos = map.GetDungeonStart();
 
   const fps = new FPSViewer({ x: 5, y: 15 });
   const chrono = new Chronometer({ x: 100, y: 15 });
-  const audio = new AudioStatus({ x: 250, y: 15 });
+  // const audio = new AudioStatus({ x: 250, y: 15 });
   const skeleton = new Skeleton(initialPos, map);
 
   const actors = [
     map,
     fps,
     chrono,
-    audio,
+    // audio,
     skeleton,
     ...myChestManager.chests,
     ...myHeroManager.heroes,
@@ -52,12 +52,12 @@ window.onload = () => {
   // Eventos de teclado
   document.body.addEventListener("keydown", (e) => {
     actors.forEach(
-      (actor) => actor.keyboard_event && actor.keyboard_event(e.key)
+      (actor) => actor.keyboardEvent && actor.keyboardEvent(e.key),
     );
   });
   document.body.addEventListener("keyup", (e) => {
     actors.forEach(
-      (actor) => actor.keyboard_event_up && actor.keyboard_event_up(e.key)
+      (actor) => actor.keyboardEventUp && actor.keyboardEventUp(e.key),
     );
   });
 };
