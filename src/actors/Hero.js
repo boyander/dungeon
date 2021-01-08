@@ -1,3 +1,26 @@
+const POS = {
+  0: {
+    dir: "right",
+    x: 1,
+    y: 0,
+  },
+  1: {
+    dir: "left",
+    x: -1,
+    y: 0,
+  },
+  2: {
+    dir: "up",
+    x: 0,
+    y: -1,
+  },
+  3: {
+    dir: "down",
+    x: 0,
+    y: 1,
+  },
+};
+
 export class Hero {
   constructor(position, map) {
     this.position = { x: position.x, y: position.y };
@@ -22,7 +45,7 @@ export class Hero {
     this.speed = { x: 0, y: 0 };
 
     this.hypoDirections = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-    this.current_direction = [];
+    this.current_direction = [0, 1];
     this.map = map;
   }
 
@@ -55,40 +78,46 @@ export class Hero {
   }
 
   update(deltaSeconds) {
-    this.speed.x = this.speed.x + 10;
+    const abailablesDirections = this.getAbailablesDirections();
 
-    // for(let i = 0; this.hypoDirections.length; i += 1){    }
-    // let direction = [];
-    // let tip = {};
-    // let abailablesDirections = [];
-    // if (!this.current_direction.length > 0) {
-    //   for (let i = 0; i < hypoDirections.length; i += 1) {
-    //     direction = [];
-    //     direction.push(hypoDirections[i]);
-    //     tip = {
-    //       x: this.position.x - direction[0] * this.heroSize,
-    //       y: this.position.y - direction[1] * this.heroSize,
-    //     };
-    //     let tile = this.map.tile(tip, direction);
-    //     // console.log(tile);
-    //     if (tile !== "W" && tile !== "i" && tile !== false) {
-    //       abailablesDirections.push(direction);
-    //     }
-    //   }
-    // }
-    // const newPosX = (this.position.x + this.speed.x * deltaSeconds);
-    // const newPosY = (this.position.y + this.speed.y * deltaSeconds);
+    if (!abailablesDirections.includes(this.current_direction)) {
+      let random = 0;
+      random = Math.floor(Math.random() * abailablesDirections.length);
+      this.current_direction = abailablesDirections[random];
+      // console.log(this.current_direction);
+      // console.log(random);
+      // console.log(abailablesDirections);
+    } else {
+      const currentDir = (e) => e === this.current_direction;
+      const objectToDraw = POS[this.hypoDirections.findIndex(currentDir)];
 
-    // const direction = this.getDirection();
-    // const tip = {
-    //   x: this.position.x - direction[0] * this.heroSize,
-    //   y: this.position.y - direction[1] * this.heroSize,
-    // };
+      const {
+        dir, x, y,
+      } = objectToDraw;
 
-    // const tile = this.map.tile(tip, direction);
-    // if (tile !== "W" && tile !== "i") {
-    //   this.position.x = newPosX;
-    //   this.position.y = newPosY;
-    // }
+      this.currentSequence = dir;
+      this.speed.x = x;
+      this.speed.y = y;
+
+      this.position.x = this.position.x + this.speed.x;
+      this.position.y = this.position.y + this.speed.y;
+    }
+  }
+
+  getAbailablesDirections() {
+    let tip = {};
+    const abailablesDirections = [];
+    for (let i = 0; i < this.hypoDirections.length; i += 1) {
+      tip = {
+        x: this.position.x - this.hypoDirections[i][0] * this.heroSize,
+        y: this.position.y - this.hypoDirections[i][1] * this.heroSize,
+      };
+      let tile = this.map.tile(tip, this.hypoDirections[i]);
+      // console.log(tile)
+      if (tile !== "W" && tile !== "i" && tile !== false) {
+        abailablesDirections.push(this.hypoDirections[i]);
+      }
+    }
+    return abailablesDirections;
   }
 }
