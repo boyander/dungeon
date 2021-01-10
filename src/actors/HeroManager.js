@@ -1,28 +1,32 @@
 import { Hero } from "./Hero";
-import { Map } from "./Map";
 
 class HeroManager {
   constructor() {
-    this.heroes = [
-    // position,ID,num,head,color
-      new Hero(this.heroStartOptions(), new Map()),
-      // new Hero(this.heroStartOptions(), new Map()),
-      // new Hero(this.heroStartOptions(), new Map()),
-      // new Hero(this.heroStartOptions(), new Map()),
-    ];
+    this.skeletonPosition = {};
+    this.isSkeletonDead = false;
     return this;
   }
 
-update(deltaSeconds) { }
+  update(deltaSeconds) { }
 
-keyboardEvent(key) { }
+  keyboardEvent(key) { }
 
-draw(delta, ctx) { }
+  draw(delta, ctx) { }
 
-heroStartOptions() {
-    const map = new Map();
+  setMap(map) {
+    this.map = map;
+    this.heroes = [
+      // position,ID,num,head,color
+      new Hero(this.heroStartOptions(), this.map),
+      // new Hero(this.heroStartOptions(), this.map),
+      // new Hero(this.heroStartOptions(), this.map),
+      // new Hero(this.heroStartOptions(), this.map),
+    ];
+  }
+
+  heroStartOptions() {
     let availablePositions = [];
-    availablePositions = map.getRandomLocations("hero");
+    availablePositions = this.map.getRandomLocations("hero");
     let random = 0;
     random = Math.floor(Math.random() * availablePositions.length);
     return availablePositions[random];

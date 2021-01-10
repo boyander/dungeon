@@ -1,10 +1,12 @@
 import { myChestManager } from "./actors/ChestManager";
 import { myHeroManager } from "./actors/HeroManager";
+import { myMap } from "./actors/Map";
+import { Skeleton } from "./actors/Skeleton";
+
 import { FPSViewer } from "./actors/FPSViewer";
 import { Chronometer } from "./actors/Chronometer";
+// import { Map } from "./actors/Map";
 // import { AudioStatus } from "./actors/AudioStatus";
-import { Skeleton } from "./actors/Skeleton";
-import { Map } from "./actors/Map";
 // import { am } from "../src/effects/AudioManager.js";
 
 window.onload = () => {
@@ -14,8 +16,9 @@ window.onload = () => {
   const ctx = canvas.getContext("2d");
 
   // Actors
-  const map = new Map();
+  const map = myMap;
   myChestManager.setMap(map);
+  myHeroManager.setMap(map);
   const initialPos = map.GetDungeonStart();
 
   const fps = new FPSViewer({ x: 5, y: 15 });

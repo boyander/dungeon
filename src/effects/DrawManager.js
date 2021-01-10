@@ -27,6 +27,13 @@ const PICTURES = {
     dest: { x: 45, y: 30 },
     offset: { x: 0, y: 8 },
   },
+  openChest: {
+    sheet: "dungeon",
+    pos: { x: 240, y: 208 },
+    size: { x: 30, y: 18 },
+    dest: { x: 45, y: 30 },
+    offset: { x: 0, y: 8 },
+  },
   wall: {
     sheet: "dungeon",
     pos: { x: 0, y: 16 },
@@ -40,13 +47,6 @@ const PICTURES = {
     size: { x: 20, y: 18 },
     dest: { x: 30, y: 30 },
     offset: { x: 0, y: 0 },
-  },
-  openChest: {
-    sheet: "dungeon",
-    pos: { x: 240, y: 208 },
-    size: { x: 30, y: 18 },
-    dest: { x: 45, y: 30 },
-    offset: { x: 0, y: 8 },
   },
   torch: {
     sheet: "dungeon",

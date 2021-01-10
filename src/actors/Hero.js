@@ -1,23 +1,25 @@
+import { myHeroManager } from "./HeroManager";
+
 const POS = {
   0: {
-    dir: "right",
-    x: 1,
-    y: 0,
+    currentSequence: "right",
+    speedX: 1,
+    speedY: 0,
   },
   1: {
-    dir: "left",
-    x: -1,
-    y: 0,
+    currentSequence: "left",
+    speedX: -1,
+    speedY: 0,
   },
   2: {
-    dir: "up",
-    x: 0,
-    y: -1,
+    currentSequence: "up",
+    speedX: 0,
+    speedY: -1,
   },
   3: {
-    dir: "down",
-    x: 0,
-    y: 1,
+    currentSequence: "down",
+    speedX: 0,
+    speedY: 1,
   },
 };
 
@@ -71,13 +73,15 @@ export class Hero {
       frameSize.y - 95,
     );
 
-    ctx.beginPath();
-    ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
-    ctx.closePath();
-    ctx.fill();
+    // ctx.beginPath();
+    // ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
+    // ctx.closePath();
+    // ctx.fill();
 
     this.time += delta;
     seq.numFrames === 1 ? this.framePos = Math.floor(this.time * 3) % seq.numFrames : this.framePos = Math.floor(this.time * 10) % seq.numFrames;
+
+    this.killSkeleton();
   }
 
   update(deltaSeconds) {
@@ -90,12 +94,12 @@ export class Hero {
       const objectToDraw = POS[this.hypoDirections.findIndex(currentDir)];
 
       const {
-        dir, x, y,
+        currentSequence, speedX, speedY,
       } = objectToDraw;
 
-      this.currentSequence = dir;
-      this.speed.x = x;
-      this.speed.y = y;
+      this.currentSequence = currentSequence;
+      this.speed.x = speedX;
+      this.speed.y = speedY;
 
       this.position.x = this.position.x + this.speed.x;
       this.position.y = this.position.y + this.speed.y;
@@ -132,5 +136,15 @@ export class Hero {
         return abailablesDirections[i];
       }
     });
+  }
+
+  killSkeleton() {
+    let distance = 0;
+
+    distance = Math.sqrt(Math.pow(this.position.x - myHeroManager.skeletonPosition.x, 2) + Math.pow(this.position.y - myHeroManager.skeletonPosition.y, 2));
+    if (distance < 15) {
+      myHeroManager.isSkeletonDead = true;
+      console.log("pum! muerto!");
+    }
   }
 }

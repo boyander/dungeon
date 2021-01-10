@@ -1,4 +1,5 @@
 import { myChestManager } from "./ChestManager";
+import { myHeroManager } from "./HeroManager";
 // import { am } from "../effects/AudioManager.js";
 export class Skeleton {
   constructor(position, map) {
@@ -12,6 +13,7 @@ export class Skeleton {
       { name: "still-left", numFrames: 2, ySeqPos: 1 },
       { name: "still-up", numFrames: 2, ySeqPos: 0 },
       { name: "still-right", numFrames: 2, ySeqPos: 3 },
+      { name: "still-dead", numFrames: 1, ySeqPos: 20 },
       { name: "moving-down", numFrames: 7, ySeqPos: 10 },
       { name: "moving-left", numFrames: 7, ySeqPos: 9 },
       { name: "moving-up", numFrames: 7, ySeqPos: 8 },
@@ -44,29 +46,37 @@ export class Skeleton {
       frameSize.y - 25,
     );
 
-    ctx.beginPath();
-    ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
-    ctx.closePath();
-    ctx.fill();
+    // ctx.beginPath();
+    // ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
+    // ctx.closePath();
+    // ctx.fill();
 
     this.time += delta;
     seq.numFrames === 2 ? this.framePos = Math.floor(this.time * 2) % seq.numFrames : this.framePos = Math.floor(this.time * 7) % seq.numFrames;
+
+    myHeroManager.skeletonPosition = this.position;
   }
 
   update(deltaSeconds) {
-    const newPosX = (this.position.x + this.speed.x * deltaSeconds);
-    const newPosY = (this.position.y + this.speed.y * deltaSeconds);
+    if (myHeroManager.isSkeletonDead) {
+      this.currentSequence = "dead";
+      this.speed = { x: 0, y: 0 };
+      this.framePos = 5;
+    } else {
+      const newPosX = (this.position.x + this.speed.x * deltaSeconds);
+      const newPosY = (this.position.y + this.speed.y * deltaSeconds);
 
-    const direction = this.getDirection();
-    const tip = {
-      x: this.position.x - direction[0] * this.skeletonSize,
-      y: this.position.y - direction[1] * this.skeletonSize,
-    };
+      const direction = this.getDirection();
+      const tip = {
+        x: this.position.x - direction[0] * this.skeletonSize,
+        y: this.position.y - direction[1] * this.skeletonSize,
+      };
 
-    const tile = this.map.tile(tip, direction);
-    if (tile !== "W" && tile !== "i") {
-      this.position.x = newPosX;
-      this.position.y = newPosY;
+      const tile = this.map.tile(tip, direction);
+      if (tile !== "W" && tile !== "i") {
+        this.position.x = newPosX;
+        this.position.y = newPosY;
+      }
     }
   }
 

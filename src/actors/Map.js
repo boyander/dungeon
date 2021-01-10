@@ -14,10 +14,10 @@ W.iWWi.WWWWi.WW.iWWWW.iWWi.W
 W.WWWW.WWWWW.WW.WWWWW.WWWW.W
 W.WWWW.WW..........WW.WWWW.W
 W.WWWW.WW.iWWWWWWi.WW.WWWW.W
-W.iWWi.WW.W......W.WW.iWWi.W
-W.........W......W.........W
-W.WWWW.WW.W......W.WW.WWWW.W
-W.WWWW.WW.WWi..iWW.WW.WWWW.W
+W.iWWi.WW.WeeeeeeW.WW.iWWi.W
+W.........WeeeeeeW.........W
+W.WWWW.WW.WeeeeeeW.WW.WWWW.W
+W.WWWW.WW.WWieeiWW.WW.WWWW.W
 W.WWWW.WW..........WW.WWWW.W
 W.WWWW.WW.WWWWWWWW.WW.WWWW.W
 W.WWWW.WW.WWWWWWWW.WW.WWWW.W
@@ -34,14 +34,8 @@ W..........................W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 `;
 
-export class Map {
+class Map {
   constructor(tileSize = 23) {
-    this.spritesheet = new Image();
-    this.spritesheet.src = require("../../public/images/dungeonStuffs4.png");
-
-    this.spritesheet2 = new Image();
-    this.spritesheet2.src = require("../../public/images/dungeonWalls2.png");
-
     this.position = { x: 0, y: 0 };
 
     this.tileSize = tileSize;
@@ -123,7 +117,8 @@ export class Map {
 
   drawTorch(delta, ctx, i, j) {
     this.drawWall(ctx, i, j);
-    myDrawManager.getDrawElements(ctx, "torch", this.tilePos(i, j), delta);
+    const animationOffset = Math.floor(Math.random() * 8);
+    myDrawManager.getDrawElements(ctx, "torch", this.tilePos(i, j), delta, animationOffset);
   }
 
   keyboardEvent() { }
@@ -136,9 +131,10 @@ export class Map {
         const cell = this.map[i][j];
         if (cell === "W") this.drawWall(ctx, i, j);
         if (cell === "i") this.drawTorch(delta, ctx, i, j);
-        if (cell === "." || cell === "S") this.drawFloor(ctx, i, j);
+        if (cell === "." || cell === "S" || cell === "e") this.drawFloor(ctx, i, j);
         // if (cell == "O") this.draw_door(ctx, i, j);
       }
     }
   }
 }
+export const myMap = new Map();
