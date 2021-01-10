@@ -3,23 +3,23 @@ import { myHeroManager } from "./HeroManager";
 const POS = {
   0: {
     currentSequence: "right",
-    speedX: 1,
+    speedX: 50,
     speedY: 0,
   },
   1: {
     currentSequence: "left",
-    speedX: -1,
+    speedX: -50,
     speedY: 0,
   },
   2: {
     currentSequence: "up",
     speedX: 0,
-    speedY: -1,
+    speedY: -50,
   },
   3: {
     currentSequence: "down",
     speedX: 0,
-    speedY: 1,
+    speedY: 50,
   },
 };
 
@@ -73,10 +73,10 @@ export class Hero {
       frameSize.y - 95,
     );
 
-    // ctx.beginPath();
-    // ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
-    // ctx.closePath();
-    // ctx.fill();
+    ctx.beginPath();
+    ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
+    ctx.closePath();
+    ctx.fill();
 
     this.time += delta;
     seq.numFrames === 1 ? this.framePos = Math.floor(this.time * 3) % seq.numFrames : this.framePos = Math.floor(this.time * 10) % seq.numFrames;
@@ -85,42 +85,10 @@ export class Hero {
   }
 
   update(deltaSeconds) {
-    if (this.current_direction.length < 1 && this.stop) {
-      this.abailablesDirections = this.getAbailablesDirections();
-      let random = 0;
-      random = Math.floor(Math.random() * this.abailablesDirections.length);
-      this.current_direction = this.abailablesDirections[random];
-      const currentDir = (e) => e === this.current_direction;
-      const objectToDraw = POS[this.hypoDirections.findIndex(currentDir)];
-
-      const {
-        currentSequence, speedX, speedY,
-      } = objectToDraw;
-
-      this.currentSequence = currentSequence;
-      this.speed.x = speedX;
-      this.speed.y = speedY;
-
-      this.position.x = this.position.x + this.speed.x;
-      this.position.y = this.position.y + this.speed.y;
+    if (this.current_direction.length < 1) {
+      this.setDirection();
     }
-
-    const direction = this.current_direction;
-    const tip = {
-      x: this.position.x - direction[0] * (this.heroSize),
-      y: this.position.y - direction[1] * (this.heroSize),
-    };
-
-    const tile = this.map.tile(tip, direction);
-    if (tile !== "W" && tile !== "i") {
-      this.position.x = this.position.x + this.speed.x;
-      this.position.y = this.position.y + this.speed.y;
-    } else {
-      this.current_direction = [];
-      this.stop = false;
-      this.speed.x = 0;
-      this.speed.y = 0;
-    }
+    this.getMove(deltaSeconds);
   }
 
   getAbailablesDirections() {
@@ -132,19 +100,55 @@ export class Hero {
         y: this.position.y - abailablesDirections[i][1] * this.heroSize,
       };
       let tile = this.map.tile(tip, abailablesDirections[i]);
-      if (tile !== "W" && tile !== "i" && tile !== false) {
+      if (tile !== "W" && tile !== "i") {
         return abailablesDirections[i];
       }
     });
   }
 
+  setDirection() {
+    this.abailablesDirections = this.getAbailablesDirections();
+    let random = 0;
+    random = Math.floor(Math.random() * this.abailablesDirections.length);
+    this.current_direction = this.abailablesDirections[random];
+  }
+
+  getMove(deltaSeconds) {
+    const currentDir = (e) => e === this.current_direction;
+    const objectToDraw = POS[this.hypoDirections.findIndex(currentDir)];
+
+    const {
+      currentSequence, speedX, speedY,
+    } = objectToDraw;
+
+    this.currentSequence = currentSequence;
+    this.speed.x = speedX;
+    this.speed.y = speedY;
+    this.nextTile(deltaSeconds);
+  }
+
+  nextTile(deltaSeconds) {
+    const newPosX = (this.position.x + this.speed.x * deltaSeconds);
+    const newPosY = (this.position.y + this.speed.y * deltaSeconds);
+
+    const direction = this.current_direction;
+    const tip = {
+      x: this.position.x - direction[0] * this.heroSize,
+      y: this.position.y - direction[1] * this.heroSize,
+    };
+    const tile = this.map.tile(tip, direction);
+    console.log(tile);
+    if (tile !== "W" && tile !== "i") {
+      this.position.x = newPosX;
+      this.position.y = newPosY;
+    }
+  }
+
   killSkeleton() {
     let distance = 0;
-
     distance = Math.sqrt(Math.pow(this.position.x - myHeroManager.skeletonPosition.x, 2) + Math.pow(this.position.y - myHeroManager.skeletonPosition.y, 2));
     if (distance < 15) {
       myHeroManager.isSkeletonDead = true;
-      console.log("pum! muerto!");
     }
   }
 }

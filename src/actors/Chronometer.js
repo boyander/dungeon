@@ -11,9 +11,10 @@ export class Chronometer {
 
   draw(delta, ctx) {
     this.seg += delta;
-    const seg = Math.floor(this.seg);
-    const currentTimer = `Time: ${this.min}:${seg} segundos`;
+    let seg = Math.floor(this.seg);
+    if (this.seg < 10) { seg = "0" + seg; }
     if (seg === 60) { this.min += 1; this.seg = 0; }
+    const currentTimer = `Time: ${this.min}:${seg}`;
 
     ctx.font = "15px Arial";
     ctx.fillStyle = "white";
