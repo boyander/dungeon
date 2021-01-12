@@ -3,6 +3,8 @@ import { Chest } from "./Chest";
 class ChestManager {
   constructor() {
     this.latestOpenedChest = "";
+    this.chestInfo = [];
+    this.allChestsOpen = false;
     return this;
   }
 
@@ -31,6 +33,10 @@ class ChestManager {
     let random = 0;
     random = Math.floor(Math.random() * availablePositions.length);
     return availablePositions[random];
+  }
+
+  checkChestsStatus() {
+    this.allChestsOpen = this.chests.every((e) => e.isChestOpen === true);
   }
 }
 export const myChestManager = new ChestManager();

@@ -1,3 +1,4 @@
+import { myChestManager } from "./ChestManager";
 import { myHeroManager } from "./HeroManager";
 
 const POS = {
@@ -46,7 +47,7 @@ export class Hero {
     this.currentSequence = "down";
     this.speed = { x: 0, y: 0 };
 
-    this.hypoDirections = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+    this.hypoDirections = [[1, 0], [-1, 0], [0, -1], [0, 1]];
     this.abailablesDirections = [];
     this.current_direction = [];
     this.stop = true;
@@ -73,10 +74,10 @@ export class Hero {
       frameSize.y - 95,
     );
 
-    ctx.beginPath();
-    ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
-    ctx.closePath();
-    ctx.fill();
+    // ctx.beginPath();
+    // ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
+    // ctx.closePath();
+    // ctx.fill();
 
     this.time += delta;
     seq.numFrames === 1 ? this.framePos = Math.floor(this.time * 3) % seq.numFrames : this.framePos = Math.floor(this.time * 10) % seq.numFrames;
@@ -85,10 +86,15 @@ export class Hero {
   }
 
   update(deltaSeconds) {
-    if (this.current_direction.length < 1) {
-      this.setDirection();
+    if (myChestManager.allChestsOpen) {
+      this.currentSequence = "down";
+      this.speed = { x: 0, y: 0 };
+    } else {
+      if (this.current_direction.length < 1) {
+        this.setDirection();
+      }
+      this.getMove(deltaSeconds);
     }
-    this.getMove(deltaSeconds);
   }
 
   getAbailablesDirections() {
@@ -137,10 +143,11 @@ export class Hero {
       y: this.position.y - direction[1] * this.heroSize,
     };
     const tile = this.map.tile(tip, direction);
-    console.log(tile);
     if (tile !== "W" && tile !== "i") {
       this.position.x = newPosX;
       this.position.y = newPosY;
+    } else {
+      this.current_direction = [];
     }
   }
 

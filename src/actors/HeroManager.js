@@ -18,9 +18,9 @@ class HeroManager {
     this.heroes = [
       // position,ID,num,head,color
       new Hero(this.heroStartOptions(), this.map),
-      // new Hero(this.heroStartOptions(), this.map),
-      // new Hero(this.heroStartOptions(), this.map),
-      // new Hero(this.heroStartOptions(), this.map),
+      new Hero(this.heroStartOptions(), this.map),
+      new Hero(this.heroStartOptions(), this.map),
+      new Hero(this.heroStartOptions(), this.map),
     ];
   }
 

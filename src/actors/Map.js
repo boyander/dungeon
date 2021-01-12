@@ -2,7 +2,7 @@ import { myDrawManager } from "../effects/DrawManager";
 
 const dungeonMap = `
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W..S.........WW............W
+W............WW............W
 W.WWWW.iWWWi.WW.iWWWi.WWWW.W
 W.WWWW.WWWWW.WW.WWWWW.WWWW.W
 W.WWWW.WWWWW.ii.WWWWW.WWWW.W
@@ -15,7 +15,7 @@ W.WWWW.WWWWW.WW.WWWWW.WWWW.W
 W.WWWW.WW..........WW.WWWW.W
 W.WWWW.WW.iWWWWWWi.WW.WWWW.W
 W.iWWi.WW.WeeeeeeW.WW.iWWi.W
-W.........WeeeeeeW.........W
+W.........WeeSeeeW.........W
 W.WWWW.WW.WeeeeeeW.WW.WWWW.W
 W.WWWW.WW.WWieeiWW.WW.WWWW.W
 W.WWWW.WW..........WW.WWWW.W
@@ -81,7 +81,6 @@ class Map {
       const tile = this.map[tileIndex[0]][tileIndex[1]];
       return tile;
     } catch (error) {
-      // console.log("out of bounds");
       return false;
     }
   }

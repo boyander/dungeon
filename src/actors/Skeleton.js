@@ -14,6 +14,7 @@ export class Skeleton {
       { name: "still-up", numFrames: 2, ySeqPos: 0 },
       { name: "still-right", numFrames: 2, ySeqPos: 3 },
       { name: "still-dead", numFrames: 1, ySeqPos: 20 },
+      { name: "still-dance", numFrames: 5, ySeqPos: 14 },
       { name: "moving-down", numFrames: 7, ySeqPos: 10 },
       { name: "moving-left", numFrames: 7, ySeqPos: 9 },
       { name: "moving-up", numFrames: 7, ySeqPos: 8 },
@@ -52,9 +53,10 @@ export class Skeleton {
     // ctx.fill();
 
     this.time += delta;
-    seq.numFrames === 2 ? this.framePos = Math.floor(this.time * 2) % seq.numFrames : this.framePos = Math.floor(this.time * 7) % seq.numFrames;
+    this.framePos = Math.floor(this.time * (seq.numFrames)) % seq.numFrames;
 
     myHeroManager.skeletonPosition = this.position;
+    myChestManager.checkChestsStatus();
   }
 
   update(deltaSeconds) {
@@ -62,6 +64,10 @@ export class Skeleton {
       this.currentSequence = "dead";
       this.speed = { x: 0, y: 0 };
       this.framePos = 5;
+    } else if (myChestManager.allChestsOpen && this.currentSequence !== "dance") {
+      this.currentSequence = "dance";
+      this.speed = { x: 0, y: 0 };
+      this.framePos = 2;
     } else {
       const newPosX = (this.position.x + this.speed.x * deltaSeconds);
       const newPosY = (this.position.y + this.speed.y * deltaSeconds);
@@ -114,6 +120,9 @@ export class Skeleton {
         this.speed.y = 100;
         break;
       case "a":
+        this.open();
+        break;
+      case "A":
         this.open();
         break;
       default:

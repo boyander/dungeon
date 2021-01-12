@@ -24,7 +24,6 @@ export class Chest {
         case "CC":
           myDrawManager.getDrawElements(ctx, "fire", this.position, delta);
           myDrawManager.getDrawHeaders(ctx, "fire", this.num);
-
           break;
         default:
           break;
