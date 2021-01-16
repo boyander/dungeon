@@ -1,21 +1,22 @@
 import { myChestManager } from "./actors/ChestManager";
 import { myHeroManager } from "./actors/HeroManager";
 import { myMap } from "./actors/Map";
-import { myGameMaster } from "./actors/GameMaster";
+// import { myGameMaster } from "./actors/GameMaster";
 
 import { Skeleton } from "./actors/Skeleton";
 
 import { FPSViewer } from "./actors/FPSViewer";
 import { Chronometer } from "./actors/Chronometer";
+import { Message } from "./actors/Message";
 
 // import { AudioStatus } from "./actors/AudioStatus";
 // import { am } from "../src/effects/AudioManager.js";
 
 window.onload = () => {
-  // console.log("ready");
-
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
+
+  // myGameMaster.level = level;
 
   // Actors
   const map = myMap;
@@ -25,6 +26,7 @@ window.onload = () => {
 
   const fps = new FPSViewer({ x: 5, y: 15 });
   const chrono = new Chronometer({ x: 100, y: 15 });
+  const message = new Message({ x: 100, y: 15 });
   // const audio = new AudioStatus({ x: 250, y: 15 });
   const skeleton = new Skeleton(initialPos, map);
 
@@ -32,6 +34,7 @@ window.onload = () => {
     map,
     fps,
     chrono,
+    message,
     // audio,
     skeleton,
     ...myChestManager.chests,

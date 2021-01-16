@@ -19,20 +19,21 @@ const LVL = {
 };
 
 class GameMaster {
-  constructor(level = 1) {
-    this.level = level;
+  constructor() {
+    this.level = 1;
+    this.start = true;
 
     // GAME SETTINGS
-    this.heroSpeed = LVL[1].heroSpeed;
-    this.heroNumber = LVL[1].heroNumber;
-    this.myDungeonMap = LVL[1].myDungeonMap;
+    this.heroSpeed = LVL[this.level].heroSpeed;
+    this.heroNumber = LVL[this.level].heroNumber;
+    this.myDungeonMap = LVL[this.level].myDungeonMap;
 
     // GAME STATUS
     this.skeletonPosition = {};
     this.allChestsOpen = false;
     this.isSkeletonDead = false;
 
-    this.debug = true;
+    this.debug = false;
     return this;
   }
 

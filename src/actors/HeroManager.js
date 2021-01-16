@@ -15,8 +15,9 @@ class HeroManager {
 
   setMap(map) {
     this.map = map;
-    console.log(myGameMaster.heroNumber);
-    this.setHereo();
+    for (let i = 0; i < myGameMaster.heroNumber; i++) {
+      this.setHereo();
+    }
   }
 
   heroStartOptions() {
@@ -27,16 +28,10 @@ class HeroManager {
     return availablePositions[random];
   }
 
-  setHereo(limit = 1) {
-    // for (let i = 0; i <= limit; i === i + 1) {
-    //   this.heroes.push(
-    //     // position,ID,num,head,color
-    //     new Hero(this.heroStartOptions(), this.map),
-    //   );
-    // }
+  setHereo() {
     this.heroes.push(
       // position,ID,num,head,color
-      new Hero(this.heroStartOptions(), this.map)
+      new Hero(this.heroStartOptions(), this.map),
     );
   }
 }

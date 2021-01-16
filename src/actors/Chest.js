@@ -11,6 +11,7 @@ export class Chest {
   }
 
   draw(delta, ctx) {
+    // if (myGameMaster.start) {}
     if (this.isChestOpen || myGameMaster.debug) {
       myDrawManager.getDrawElements(ctx, "openChest", this.position, delta);
       switch (this.value) {

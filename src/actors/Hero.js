@@ -55,6 +55,7 @@ export class Hero {
   }
 
   draw(delta, ctx) {
+    // if (myGameMaster.start) {}
     const frameSize = { x: 120, y: 130 };
     const seqName = this.speed.x === 0 && this.speed.y === 0 ? `still-${this.currentSequence}` : `moving-${this.currentSequence}`;
     const seq = this.sequences.find((s) => s.name === seqName);
@@ -104,7 +105,7 @@ export class Hero {
         x: this.position.x - abailablesDirections[i][0] * this.heroSize,
         y: this.position.y - abailablesDirections[i][1] * this.heroSize,
       };
-      let tile = this.map.tile(tip, abailablesDirections[i]);
+      const tile = this.map.tile(tip, abailablesDirections[i]);
       if (tile !== "W" && tile !== "i") {
         return abailablesDirections[i];
       }
