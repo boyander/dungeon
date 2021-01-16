@@ -1,4 +1,5 @@
 import { myDrawManager } from "../effects/DrawManager";
+import { myGameMaster } from "./GameMaster";
 
 export class Chest {
   constructor(position, value, num, isChestOpen) {
@@ -10,7 +11,7 @@ export class Chest {
   }
 
   draw(delta, ctx) {
-    if (this.isChestOpen) {
+    if (this.isChestOpen || myGameMaster.debug) {
       myDrawManager.getDrawElements(ctx, "openChest", this.position, delta);
       switch (this.value) {
         case "AA":

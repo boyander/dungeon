@@ -1,11 +1,13 @@
 import { myChestManager } from "./actors/ChestManager";
 import { myHeroManager } from "./actors/HeroManager";
 import { myMap } from "./actors/Map";
+import { myGameMaster } from "./actors/GameMaster";
+
 import { Skeleton } from "./actors/Skeleton";
 
 import { FPSViewer } from "./actors/FPSViewer";
 import { Chronometer } from "./actors/Chronometer";
-// import { Map } from "./actors/Map";
+
 // import { AudioStatus } from "./actors/AudioStatus";
 // import { am } from "../src/effects/AudioManager.js";
 

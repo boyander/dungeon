@@ -1,26 +1,25 @@
-import { myChestManager } from "./ChestManager";
-import { myHeroManager } from "./HeroManager";
+import { myGameMaster } from "./GameMaster";
 
 const POS = {
   0: {
     currentSequence: "right",
-    speedX: 50,
+    speedX: myGameMaster.heroSpeed,
     speedY: 0,
   },
   1: {
     currentSequence: "left",
-    speedX: -50,
+    speedX: -(myGameMaster.heroSpeed),
     speedY: 0,
   },
   2: {
     currentSequence: "up",
     speedX: 0,
-    speedY: -50,
+    speedY: -(myGameMaster.heroSpeed),
   },
   3: {
     currentSequence: "down",
     speedX: 0,
-    speedY: 50,
+    speedY: myGameMaster.heroSpeed,
   },
 };
 
@@ -86,7 +85,7 @@ export class Hero {
   }
 
   update(deltaSeconds) {
-    if (myChestManager.allChestsOpen) {
+    if (myGameMaster.allChestsOpen) {
       this.currentSequence = "down";
       this.speed = { x: 0, y: 0 };
     } else {
@@ -153,9 +152,9 @@ export class Hero {
 
   killSkeleton() {
     let distance = 0;
-    distance = Math.sqrt(Math.pow(this.position.x - myHeroManager.skeletonPosition.x, 2) + Math.pow(this.position.y - myHeroManager.skeletonPosition.y, 2));
+    distance = Math.sqrt(Math.pow(this.position.x - myGameMaster.skeletonPosition.x, 2) + Math.pow(this.position.y - myGameMaster.skeletonPosition.y, 2));
     if (distance < 15) {
-      myHeroManager.isSkeletonDead = true;
+      myGameMaster.isSkeletonDead = true;
     }
   }
 }

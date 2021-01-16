@@ -1,10 +1,10 @@
+import { myGameMaster } from "./GameMaster";
 import { Chest } from "./Chest";
 
 class ChestManager {
   constructor() {
     this.latestOpenedChest = "";
     this.chestInfo = [];
-    this.allChestsOpen = false;
     return this;
   }
 
@@ -36,7 +36,7 @@ class ChestManager {
   }
 
   checkChestsStatus() {
-    this.allChestsOpen = this.chests.every((e) => e.isChestOpen === true);
+    myGameMaster.allChestsOpen = this.chests.every((e) => e.isChestOpen === true);
   }
 }
 export const myChestManager = new ChestManager();

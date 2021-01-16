@@ -81,7 +81,6 @@ class DrawManager {
     throw new Error(`No object to draw with name ${objectName}`);
   }
 
-  // TODO: Animation offset must be different for each object instance
   getDrawElements(ctx, objectName, position, delta = 0, animationOffset = 0) {
     this.render_torch_time += delta;
     const getDrawElements = Math.floor(
@@ -115,9 +114,9 @@ class DrawManager {
       pos.y - size.y,
       size.x / 2,
       size.y,
-      half ? position.x + 38 - offset.x : position.x - offset.x,
+      half ? position.x + 28 - offset.x : position.x - offset.x,
       position.y,
-      dest.x,
+      dest.x - 12,
       dest.y,
     );
   }

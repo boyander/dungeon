@@ -1,5 +1,5 @@
+import { myGameMaster } from "./GameMaster";
 import { myChestManager } from "./ChestManager";
-import { myHeroManager } from "./HeroManager";
 // import { am } from "../effects/AudioManager.js";
 export class Skeleton {
   constructor(position, map) {
@@ -55,16 +55,16 @@ export class Skeleton {
     this.time += delta;
     this.framePos = Math.floor(this.time * (seq.numFrames)) % seq.numFrames;
 
-    myHeroManager.skeletonPosition = this.position;
+    myGameMaster.skeletonPosition = this.position;
     myChestManager.checkChestsStatus();
   }
 
   update(deltaSeconds) {
-    if (myHeroManager.isSkeletonDead) {
+    if (myGameMaster.isSkeletonDead && !myGameMaster.debug) {
       this.currentSequence = "dead";
       this.speed = { x: 0, y: 0 };
       this.framePos = 5;
-    } else if (myChestManager.allChestsOpen && this.currentSequence !== "dance") {
+    } else if (myGameMaster.allChestsOpen && this.currentSequence !== "dance") {
       this.currentSequence = "dance";
       this.speed = { x: 0, y: 0 };
       this.framePos = 2;

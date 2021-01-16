@@ -1,50 +1,12 @@
 import { myDrawManager } from "../effects/DrawManager";
-
-const dungeonMap = `
-WWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W............WW............W
-W.WWWW.iWWWi.WW.iWWWi.WWWW.W
-W.WWWW.WWWWW.WW.WWWWW.WWWW.W
-W.WWWW.WWWWW.ii.WWWWW.WWWW.W
-W..........................W
-W.WWWW.WW.WWWWWWWW.WW.WWWW.W
-W.WWWW.WW.WWWWWWWW.WW.WWWW.W
-W......WW....WW....WW......W
-W.iWWi.WWWWi.WW.iWWWW.iWWi.W
-W.WWWW.WWWWW.WW.WWWWW.WWWW.W
-W.WWWW.WW..........WW.WWWW.W
-W.WWWW.WW.iWWWWWWi.WW.WWWW.W
-W.iWWi.WW.WeeeeeeW.WW.iWWi.W
-W.........WeeSeeeW.........W
-W.WWWW.WW.WeeeeeeW.WW.WWWW.W
-W.WWWW.WW.WWieeiWW.WW.WWWW.W
-W.WWWW.WW..........WW.WWWW.W
-W.WWWW.WW.WWWWWWWW.WW.WWWW.W
-W.WWWW.WW.WWWWWWWW.WW.WWWW.W
-W............WW............W
-W.iWWi.WWWWW.WW.WWWWW.iWWi.W
-W.WWWW.WWWWW.WW.WWWWW.WWWW.W
-W...WW................WW...W
-WWW.WW.WW.iWWWWWWi.WW.WW.WWW
-WWW.WW.WW.WWWWWWWW.WW.WW.WWW
-W......WW....WW....WW......W
-W.iWWWWWWWWW.WW.WWWWWWWWWi.W
-W.WWWWWWWWWW.WW.WWWWWWWWWW.W
-W..........................W
-WWWWWWWWWWWWWWWWWWWWWWWWWWWW
-`;
+import { myGameMaster } from "./GameMaster";
 
 class Map {
   constructor(tileSize = 23) {
     this.position = { x: 0, y: 0 };
-
     this.tileSize = tileSize;
-    const rows = dungeonMap.trim().split("\n");
+    const rows = myGameMaster.myDungeonMap.trim().split("\n");
     this.map = rows.map((row) => row.split(""));
-    // console.log("Map size", rows[0].length, this.map.length);
-
-    this.time = 0;
-    this.count = 0;
   }
 
   GetDungeonStart() {

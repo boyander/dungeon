@@ -1,5 +1,4 @@
-import { myHeroManager } from "./HeroManager";
-import { myChestManager } from "./ChestManager";
+import { myGameMaster } from "./GameMaster";
 
 export class Chronometer {
   constructor(position) {
@@ -13,12 +12,12 @@ export class Chronometer {
   update() { }
 
   draw(delta, ctx) {
-    if (!myHeroManager.isSkeletonDead && !myChestManager.allChestsOpen) {
+    if (!myGameMaster.isSkeletonDead && !myGameMaster.allChestsOpen) {
       this.seg += delta;
     }
 
     let seg = Math.floor(this.seg);
-    if (this.seg < 10) { seg = "0" + seg; }
+    if (this.seg < 10) { seg = `0${seg}`; }
     if (seg === 60) { this.min += 1; this.seg = 0; }
     const currentTimer = `Time: ${this.min}:${seg}`;
 
