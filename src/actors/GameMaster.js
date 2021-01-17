@@ -37,7 +37,7 @@ class GameMaster {
     this.allChestsOpen = false;
     this.isSkeletonDead = false;
 
-    this.debug = true;
+    this.debug = false;
     return this;
   }
 

@@ -2,7 +2,7 @@ export const dungeonMap = {
   1: `
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W...S........WW............W
+W............WW............W
 W.WWWW.iWWWi.WW.iWWWi.WWWW.W
 W.WWWW.WWWWW.WW.WWWWW.WWWW.W
 W.WWWW.WWWWW.ii.WWWWW.WWWW.W

@@ -1,4 +1,5 @@
 import { myGameMaster } from "./GameMaster";
+
 export class UpperMessage {
   constructor(position) {
     this.position = position;

@@ -37,7 +37,7 @@ export class Skeleton {
     const seq = this.sequences.find((s) => s.name === seqName);
     if (!seq) throw new Error("invalid seq");
 
-    this.drawShadow(ctx, canvasSize);
+    // this.drawShadow(ctx, canvasSize);
 
     // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
     ctx.drawImage(
@@ -180,7 +180,13 @@ export class Skeleton {
     // Set xor operation
     maskCtx.globalCompositeOperation = "xor";
     // Draw the shape you want to take out
-    maskCtx.arc(this.position.x, this.position.y, myGameMaster.viewField, 0, 2 * Math.PI);
+    maskCtx.arc(
+      this.position.x,
+      this.position.y,
+      myGameMaster.viewField,
+      0,
+      2 * Math.PI
+    );
     maskCtx.fill();
 
     // Draw mask on the image, and done !
