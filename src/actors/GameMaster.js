@@ -5,16 +5,19 @@ const LVL = {
     heroSpeed: 50,
     heroNumber: 4,
     myDungeonMap: dungeonMap[1],
+    viewField: 300,
   },
   2: {
     heroSpeed: 70,
     heroNumber: 6,
     myDungeonMap: dungeonMap[2],
+    viewField: 200,
   },
   3: {
     heroSpeed: 80,
     heroNumber: 8,
     myDungeonMap: dungeonMap[3],
+    viewField: 150,
   },
 };
 
@@ -27,13 +30,14 @@ class GameMaster {
     this.heroSpeed = LVL[this.level].heroSpeed;
     this.heroNumber = LVL[this.level].heroNumber;
     this.myDungeonMap = LVL[this.level].myDungeonMap;
+    this.viewField = LVL[this.level].viewField;
 
     // GAME STATUS
     this.skeletonPosition = {};
     this.allChestsOpen = false;
     this.isSkeletonDead = false;
 
-    this.debug = false;
+    this.debug = true;
     return this;
   }
 

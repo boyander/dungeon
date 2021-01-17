@@ -1,4 +1,5 @@
-export class Message {
+import { myGameMaster } from "./GameMaster";
+export class UpperMessage {
   constructor(position) {
     this.position = position;
   }
@@ -12,7 +13,12 @@ export class Message {
     ctx.fillStyle = "white";
     ctx.fillText(
       "Press A to open the chests",
-      this.position.x + 150,
+      this.position.x + 100,
+      this.position.y,
+    );
+    ctx.fillText(
+      `Level ${myGameMaster.level}`,
+      this.position.x + 300,
       this.position.y,
     );
   }

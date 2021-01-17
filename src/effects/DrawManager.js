@@ -1,3 +1,5 @@
+import { myGameMaster } from "../actors/GameMaster";
+
 const PICTURES = {
   rock: {
     sheet: "dungeon",
@@ -90,7 +92,7 @@ class DrawManager {
       pos, size, dest, frames, offset,
     } = this.getObject(objectName);
     const drawFrame = frames ? getDrawElements % frames : 0;
-    // objectName == "floor" ? ctx.globalAlpha = 0 : ctx.globalAlpha = 1;
+    // ctx.globalAlpha = 1;
     ctx.drawImage(
       SPRITESHEETS.dungeon,
       pos.x + size.x * drawFrame,

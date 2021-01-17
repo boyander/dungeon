@@ -1,4 +1,6 @@
+/* eslint-disable class-methods-use-this */
 import { myGameMaster } from "./GameMaster";
+import { myMap } from "./Map";
 import { Hero } from "./Hero";
 
 class HeroManager {
@@ -13,16 +15,15 @@ class HeroManager {
 
   draw(delta, ctx) {}
 
-  setMap(map) {
-    this.map = map;
-    for (let i = 0; i < myGameMaster.heroNumber; i++) {
+  setMap() {
+    for (let i = 0; i < myGameMaster.heroNumber; i += 1) {
       this.setHereo();
     }
   }
 
   heroStartOptions() {
     let availablePositions = [];
-    availablePositions = this.map.getRandomLocations("hero");
+    availablePositions = myMap.getRandomLocations("hero");
     let random = 0;
     random = Math.floor(Math.random() * availablePositions.length);
     return availablePositions[random];
@@ -31,7 +32,7 @@ class HeroManager {
   setHereo() {
     this.heroes.push(
       // position,ID,num,head,color
-      new Hero(this.heroStartOptions(), this.map),
+      new Hero(this.heroStartOptions(), myMap)
     );
   }
 }
