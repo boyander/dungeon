@@ -1,4 +1,7 @@
+/* eslint-disable no-restricted-properties */
 import { myGameMaster } from "./GameMaster";
+
+const linkIMG = require("../../public/images/link.png");
 
 const POS = {
   0: {
@@ -8,13 +11,13 @@ const POS = {
   },
   1: {
     currentSequence: "left",
-    speedX: -(myGameMaster.heroSpeed),
+    speedX: -myGameMaster.heroSpeed,
     speedY: 0,
   },
   2: {
     currentSequence: "up",
     speedX: 0,
-    speedY: -(myGameMaster.heroSpeed),
+    speedY: -myGameMaster.heroSpeed,
   },
   3: {
     currentSequence: "down",
@@ -29,7 +32,7 @@ export class Hero {
     this.heroSize = 10;
 
     this.spritesheet = new Image();
-    this.spritesheet.src = require("../../public/images/link.png");
+    this.spritesheet.src = linkIMG;
     this.sequences = [
       { name: "still-down", numFrames: 1, ySeqPos: 0 },
       { name: "still-left", numFrames: 1, ySeqPos: 1 },
@@ -46,7 +49,12 @@ export class Hero {
     this.currentSequence = "down";
     this.speed = { x: 0, y: 0 };
 
-    this.hypoDirections = [[1, 0], [-1, 0], [0, -1], [0, 1]];
+    this.hypoDirections = [
+      [1, 0],
+      [-1, 0],
+      [0, -1],
+      [0, 1],
+    ];
     this.abailablesDirections = [];
     this.current_direction = [];
     this.stop = true;
@@ -57,7 +65,10 @@ export class Hero {
   draw(delta, ctx) {
     // if (myGameMaster.start) {}
     const frameSize = { x: 120, y: 130 };
-    const seqName = this.speed.x === 0 && this.speed.y === 0 ? `still-${this.currentSequence}` : `moving-${this.currentSequence}`;
+    const seqName =
+      this.speed.x === 0 && this.speed.y === 0
+        ? `still-${this.currentSequence}`
+        : `moving-${this.currentSequence}`;
     const seq = this.sequences.find((s) => s.name === seqName);
     if (!seq) throw new Error("invalid seq");
 
@@ -80,7 +91,11 @@ export class Hero {
     // ctx.fill();
 
     this.time += delta;
-    seq.numFrames === 1 ? this.framePos = Math.floor(this.time * 3) % seq.numFrames : this.framePos = Math.floor(this.time * 10) % seq.numFrames;
+    if (seq.numFrames === 1) {
+      this.framePos = Math.floor(this.time * 3) % seq.numFrames;
+    } else {
+      this.framePos = Math.floor(this.time * 10) % seq.numFrames;
+    }
 
     this.killSkeleton();
   }
@@ -123,9 +138,7 @@ export class Hero {
     const currentDir = (e) => e === this.current_direction;
     const objectToDraw = POS[this.hypoDirections.findIndex(currentDir)];
 
-    const {
-      currentSequence, speedX, speedY,
-    } = objectToDraw;
+    const { currentSequence, speedX, speedY } = objectToDraw;
 
     this.currentSequence = currentSequence;
     this.speed.x = speedX;
@@ -134,8 +147,8 @@ export class Hero {
   }
 
   nextTile(deltaSeconds) {
-    const newPosX = (this.position.x + this.speed.x * deltaSeconds);
-    const newPosY = (this.position.y + this.speed.y * deltaSeconds);
+    const newPosX = this.position.x + this.speed.x * deltaSeconds;
+    const newPosY = this.position.y + this.speed.y * deltaSeconds;
 
     const direction = this.current_direction;
     const tip = {
@@ -153,7 +166,10 @@ export class Hero {
 
   killSkeleton() {
     let distance = 0;
-    distance = Math.sqrt(Math.pow(this.position.x - myGameMaster.skeletonPosition.x, 2) + Math.pow(this.position.y - myGameMaster.skeletonPosition.y, 2));
+    distance = Math.sqrt(
+      Math.pow(this.position.x - myGameMaster.skeletonPosition.x, 2)
+      + Math.pow(this.position.y - myGameMaster.skeletonPosition.y, 2),
+    );
     if (distance < 15) {
       myGameMaster.isSkeletonDead = true;
     }

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable class-methods-use-this */
 import { dungeonMap } from "../../public/assets/maps/dungeonMaps";
 
 const LVL = {

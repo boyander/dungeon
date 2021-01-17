@@ -1,7 +1,7 @@
 import { myChestManager } from "./actors/ChestManager";
 import { myHeroManager } from "./actors/HeroManager";
 import { myMap } from "./actors/Map";
-//import { myGameMaster } from "./actors/GameMaster";
+// import { myGameMaster } from "./actors/GameMaster";
 
 import { Skeleton } from "./actors/Skeleton";
 
@@ -17,14 +17,9 @@ window.onload = () => {
   const canvasSize = { x: canvas.width, y: canvas.height };
   const ctx = canvas.getContext("2d");
 
-  // const canvasShadow = document.getElementById("canvasShadow");
-  // const ctxShadow = canvasShadow.getContext("2d");
-
-  // myGameMaster.level = level;
-
   // Actors
   const map = myMap;
-  myHeroManager.setMap();
+  myHeroManager.setHeroes();
   const initialPos = map.GetDungeonStart();
 
   const fps = new FPSViewer({ x: 5, y: 15 });

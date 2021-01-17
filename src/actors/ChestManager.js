@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import { myGameMaster } from "./GameMaster";
 import { myMap } from "./Map";

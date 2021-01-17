@@ -1,5 +1,5 @@
-import { myAudioManager } from "../effects/AudioManager";
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable class-methods-use-this */
 export class AudioStatus {
   constructor(position) {
     this.position = position;

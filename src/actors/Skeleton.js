@@ -1,13 +1,16 @@
 import { myGameMaster } from "./GameMaster";
 import { myChestManager } from "./ChestManager";
 // import { am } from "../effects/AudioManager.js";
+
+const skeletonIMG = require("../../public/images/skeleton.png");
+
 export class Skeleton {
   constructor(position, map) {
     this.position = { x: position.x, y: position.y };
     this.skeletonSize = 10;
 
     this.spritesheet = new Image();
-    this.spritesheet.src = require("../../public/images/skeleton.png");
+    this.spritesheet.src = skeletonIMG;
     this.sequences = [
       { name: "still-down", numFrames: 2, ySeqPos: 2 },
       { name: "still-left", numFrames: 2, ySeqPos: 1 },
@@ -136,12 +139,15 @@ export class Skeleton {
   }
 
   open() {
+    if (!myGameMaster.allChestsOpen) {
+      myGameMaster.level = 2;
+    }
     let distance = 0;
     myChestManager.chests.forEach((ori) => {
       distance = 0;
       distance = Math.sqrt(
-        Math.pow(this.position.x - ori.position.x, 2) +
-          Math.pow(this.position.y - ori.position.y, 2)
+        Math.pow(this.position.x - ori.position.x, 2)
+         + Math.pow(this.position.y - ori.position.y, 2),
       );
       // console.log(myChestManager.latestOpenedChest);
       if (distance < 30 && !ori.isChestOpen) {

@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-unused-vars */
+/* eslint-disable class-methods-use-this */
 import { myDrawManager } from "../effects/DrawManager";
 import { myGameMaster } from "./GameMaster";
 
@@ -25,7 +28,9 @@ class Map {
     for (let i = 0; i < this.map.length; i += 1) {
       for (let j = 0; j < this.map[i].length; j += 1) {
         if (this.map[i][j] === ".") {
-          element === "chest" ? availablePositions.push(this.tilePos(i, j)) : availablePositions.push(this.editedTilePos(i, j))
+          element === "chest"
+            ? availablePositions.push(this.tilePos(i, j))
+            : availablePositions.push(this.editedTilePos(i, j));
         }
       }
     }
@@ -79,12 +84,18 @@ class Map {
   drawTorch(delta, ctx, i, j) {
     this.drawWall(ctx, i, j);
     const animationOffset = Math.floor(Math.random() * 8);
-    myDrawManager.getDrawElements(ctx, "torch", this.tilePos(i, j), delta, animationOffset);
+    myDrawManager.getDrawElements(
+      ctx,
+      "torch",
+      this.tilePos(i, j),
+      delta,
+      animationOffset,
+    );
   }
 
-  keyboardEvent() { }
+  keyboardEvent() {}
 
-  update() { }
+  update() {}
 
   draw(delta, ctx) {
     for (let i = 0; i < this.map.length; i += 1) {
@@ -93,7 +104,6 @@ class Map {
         if (cell === "W") this.drawWall(ctx, i, j);
         if (cell === "i") this.drawTorch(delta, ctx, i, j);
         if (cell === "." || cell === "S" || cell === "e") this.drawFloor(ctx, i, j);
-        // if (cell == "O") this.draw_door(ctx, i, j);
       }
     }
   }
