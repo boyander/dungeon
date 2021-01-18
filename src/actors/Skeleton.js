@@ -31,7 +31,7 @@ export class Skeleton {
     this.map = map;
   }
 
-  draw(delta, ctx, canvasSize) {
+  draw(delta, ctx) {
     const frameSize = { x: 64, y: 64 };
     const seqName =
       this.speed.x === 0 && this.speed.y === 0
@@ -40,7 +40,7 @@ export class Skeleton {
     const seq = this.sequences.find((s) => s.name === seqName);
     if (!seq) throw new Error("invalid seq");
 
-    // this.drawShadow(ctx, canvasSize);
+    this.drawShadow(ctx);
 
     // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
     ctx.drawImage(
@@ -139,15 +139,12 @@ export class Skeleton {
   }
 
   open() {
-    if (!myGameMaster.allChestsOpen) {
-      myGameMaster.level = 2;
-    }
     let distance = 0;
     myChestManager.chests.forEach((ori) => {
       distance = 0;
       distance = Math.sqrt(
-        Math.pow(this.position.x - ori.position.x, 2)
-         + Math.pow(this.position.y - ori.position.y, 2),
+        Math.pow(this.position.x - ori.position.x, 2) +
+          Math.pow(this.position.y - ori.position.y, 2)
       );
       // console.log(myChestManager.latestOpenedChest);
       if (distance < 30 && !ori.isChestOpen) {
@@ -171,20 +168,22 @@ export class Skeleton {
     });
   }
 
-  drawShadow(ctx, canvasSize) {
+  drawShadow(ctx) {
+    if (this.currentSequence === "dance") myGameMaster.viewField++;
     // Create a canvas that we will use as a mask
+    const canvas = document.getElementById("canvas");
     const maskCanvas = document.getElementById("canvasShadow");
     // Ensure same dimensions
-    maskCanvas.width = canvasSize.x;
-    maskCanvas.height = canvasSize.y;
+    maskCanvas.width = canvas.width;
+    maskCanvas.height = canvas.height;
     const maskCtx = maskCanvas.getContext("2d");
     // This color is the one of the filled shape
     maskCtx.fillStyle = "black";
     // Fill the mask
-    maskCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
+    maskCtx.fillRect(0, 38, maskCanvas.width, maskCanvas.height);
 
     // Set xor operation
-    maskCtx.globalCompositeOperation = "xor";
+    maskCtx.globalCompositeOperation = "destination-out";
     // Draw the shape you want to take out
     maskCtx.arc(
       this.position.x,

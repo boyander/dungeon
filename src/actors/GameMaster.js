@@ -7,7 +7,7 @@ const LVL = {
     heroSpeed: 50,
     heroNumber: 4,
     myDungeonMap: dungeonMap[1],
-    viewField: 300,
+    viewField: 250,
   },
   2: {
     heroSpeed: 70,
@@ -26,7 +26,6 @@ const LVL = {
 class GameMaster {
   constructor() {
     this.level = 1;
-    this.start = true;
 
     // GAME SETTINGS
     this.heroSpeed = LVL[this.level].heroSpeed;

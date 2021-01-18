@@ -68,8 +68,8 @@ W............WW............W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 `,
   3: `
-iiiiiiiiiiiiiiiiiiiiiiiiiiii
-iiiiiiiiiiiiiiiiiiiiiiiiiiii
+WWWWWWWWWWWWWWWWWWWWWWWWWWWW
+WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 i......ii....ii....ii......i
 i.iiii.ii.ii.ii.ii.ii.iiii.i
 i.iiii.ii.ii.ii.ii.ii.iiii.i

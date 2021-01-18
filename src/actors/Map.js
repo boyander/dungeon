@@ -8,8 +8,10 @@ class Map {
   constructor(tileSize = 23) {
     this.position = { x: 0, y: 0 };
     this.tileSize = tileSize;
+    this.level = myGameMaster.level;
     const rows = myGameMaster.myDungeonMap.trim().split("\n");
     this.map = rows.map((row) => row.split(""));
+    return this;
   }
 
   GetDungeonStart() {
@@ -89,13 +91,13 @@ class Map {
       "torch",
       this.tilePos(i, j),
       delta,
-      animationOffset,
+      animationOffset
     );
   }
 
   keyboardEvent() {}
 
-  update() {}
+  update() {  }
 
   draw(delta, ctx) {
     for (let i = 0; i < this.map.length; i += 1) {
@@ -103,9 +105,16 @@ class Map {
         const cell = this.map[i][j];
         if (cell === "W") this.drawWall(ctx, i, j);
         if (cell === "i") this.drawTorch(delta, ctx, i, j);
-        if (cell === "." || cell === "S" || cell === "e") this.drawFloor(ctx, i, j);
+        if (cell === "." || cell === "S" || cell === "e")
+          this.drawFloor(ctx, i, j);
       }
     }
   }
 }
 export const myMap = new Map();
+
+// export const getCurrentMap = () => {
+//   const newMap = new Map();
+//   console.log("currentMapLevel", newMap.level);
+//   return newMap;
+// };

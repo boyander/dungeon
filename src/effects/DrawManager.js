@@ -86,11 +86,9 @@ class DrawManager {
   getDrawElements(ctx, objectName, position, delta = 0, animationOffset = 0) {
     this.render_torch_time += delta;
     const getDrawElements = Math.floor(
-      this.render_torch_time + animationOffset / 8,
+      this.render_torch_time + animationOffset / 8
     );
-    const {
-      pos, size, dest, frames, offset,
-    } = this.getObject(objectName);
+    const { pos, size, dest, frames, offset } = this.getObject(objectName);
     const drawFrame = frames ? getDrawElements % frames : 0;
     // ctx.globalAlpha = 1;
     ctx.drawImage(
@@ -102,14 +100,12 @@ class DrawManager {
       position.x - offset.x,
       position.y - offset.y,
       dest.x,
-      dest.y,
+      dest.y
     );
   }
 
   drawHalf(ctx, objectName, position, half = false) {
-    const {
-      pos, size, dest, offset,
-    } = this.getObject(objectName);
+    const { pos, size, dest, offset } = this.getObject(objectName);
     // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
     ctx.drawImage(
       SPRITESHEETS.dungeon,
@@ -117,10 +113,10 @@ class DrawManager {
       pos.y - size.y,
       size.x / 2,
       size.y,
-      half ? position.x + 28 - offset.x : position.x - offset.x,
-      position.y,
+      half ? position.x + 48 - offset.x : position.x + 20 - offset.x,
+      position.y - 8,
       dest.x - 12,
-      dest.y,
+      dest.y
     );
   }
 
@@ -138,7 +134,7 @@ class DrawManager {
         x: headerPositionBase.x + typeOffset[objectName].x,
         y: headerPositionBase.y + typeOffset[objectName].y,
       },
-      half,
+      half
     );
   }
 }

@@ -14,7 +14,6 @@ import { UpperMessage } from "./actors/UpperMessage";
 
 window.onload = () => {
   const canvas = document.getElementById("canvas");
-  const canvasSize = { x: canvas.width, y: canvas.height };
   const ctx = canvas.getContext("2d");
 
   // Actors
@@ -48,7 +47,7 @@ window.onload = () => {
     ctx.clearRect(0, 0, 650, 720);
     actors
       .sort((a, b) => a.position.y - b.position.y)
-      .forEach((actor) => actor.draw(delta, ctx, canvasSize));
+      .forEach((actor) => actor.draw(delta, ctx));
     window.requestAnimationFrame(render);
   };
 

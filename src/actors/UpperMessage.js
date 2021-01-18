@@ -15,7 +15,7 @@ export class UpperMessage {
     ctx.font = "15px Arial";
     ctx.fillStyle = "white";
     ctx.fillText(
-      "Press A to open the chests",
+      "Press 'a' to open the chests",
       this.position.x + 100,
       this.position.y,
     );
