@@ -57,3 +57,7 @@ https://www.npmjs.com/package/eslint
 https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
 
 https://es.wikipedia.org/wiki/Mundodisco
+
+```json
+    "ghbuild": "parcel build --out-dir docs --public-url /dungeon index.html",
+```
