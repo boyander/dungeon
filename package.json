@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint src/**/*.js",
+    "ghbuild": "parcel build --out-dir docs --public-url /ZeldasRupeeRace index.html",
     "build": "parcel build index.html",
     "dev": "parcel index.html",
     "start": "parcel serve -p $PORT index.html"
