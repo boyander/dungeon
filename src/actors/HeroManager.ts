@@ -1,20 +1,19 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable class-methods-use-this */
 import { myGameMaster } from "./GameMaster";
 import { myMap } from "./Map";
 import { Hero } from "./Hero";
 
 class HeroManager {
+  heroes: []
   constructor() {
     this.heroes = [];
     return this;
   }
 
-  update(deltaSeconds) {}
+  update(deltaSeconds: any) { }
 
-  keyboardEvent(key) {}
+  keyboardEvent(key: any) { }
 
-  draw(delta, ctx) {}
+  draw(delta: any, ctx: any) { }
 
   setHeroes() {
     for (let i = 0; i < myGameMaster.heroNumber; i += 1) {

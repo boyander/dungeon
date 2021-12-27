@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-properties */
+import { Point } from "../types/Point";
 import { myGameMaster } from "./GameMaster";
 
 const linkIMG = require("../../public/images/link.png");
@@ -27,7 +28,7 @@ const POS = {
 };
 
 export class Hero {
-  constructor(position, map) {
+  constructor(position: Point, map: string) {
     this.position = { x: position.x, y: position.y };
     this.heroSize = 10;
 

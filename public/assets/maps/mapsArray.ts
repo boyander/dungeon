@@ -1,5 +1,4 @@
-export const dungeonMap = {
-  1: `
+export const mapsArray: Array<string> = [`
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W............WW............W
@@ -32,8 +31,7 @@ W.iWWWWWWWWW.WW.WWWWWWWWWi.W
 W.WWWWWWWWWW.WW.WWWWWWWWWW.W
 W..........................W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
-`,
-  2: `
+`, `
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W......WW....WW....WW......W
@@ -67,7 +65,7 @@ W.iWWWWWWWWi.WW.iWWWWWWWWi.W
 W............WW............W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 `,
-  3: `
+  `
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 WWWWWWWWWWWWWWWWWWWWWWWWWWWW
 i......ii....ii....ii......i
@@ -100,5 +98,4 @@ i.iiiiiiiiii.ii.iiiiiiiiii.i
 i.iiiiiiiiii.ii.iiiiiiiiii.i
 i............ii............i
 iiiiiiiiiiiiiiiiiiiiiiiiiiii
-`,
-};
+`,]

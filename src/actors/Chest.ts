@@ -1,8 +1,14 @@
 import { myDrawManager } from "../effects/DrawManager";
+import { Point } from "../types/Point";
 import { myGameMaster } from "./GameMaster";
 
 export class Chest {
-  constructor(position, value, num, isChestOpen) {
+  position: Point;
+  headerPosition: {};
+  value: string;
+  num: number;
+  isChestOpen: boolean
+  constructor(position: Point, value: string, num: number, isChestOpen: boolean) {
     this.position = { x: position.x, y: position.y };
     this.headerPosition = { x: 10, y: 10 };
     this.value = value;
@@ -10,7 +16,7 @@ export class Chest {
     this.isChestOpen = isChestOpen;
   }
 
-  draw(delta, ctx) {
+  draw(delta: any, ctx: any) {
     // if (myGameMaster.start) {}
     if (this.isChestOpen || myGameMaster.debug) {
       myDrawManager.getDrawElements(ctx, "openChest", this.position, delta);

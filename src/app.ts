@@ -13,8 +13,8 @@ import { UpperMessage } from "./actors/UpperMessage";
 // import { am } from "../src/effects/AudioManager.js";
 
 window.onload = () => {
-  const canvas = document.getElementById("canvas");
-  const ctx = canvas.getContext("2d");
+  const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
   // Actors
   const map = myMap;
@@ -40,7 +40,7 @@ window.onload = () => {
 
   // GAME LOOP -> BUCLE DE RENDERIZADO Y ACTUALIZACIÓN
   let lastFrame = 0;
-  const render = (time) => {
+  const render = (time: number) => {
     const delta = (time - lastFrame) / 1000;
     lastFrame = time;
     actors.forEach((actor) => actor.update && actor.update(delta));
@@ -51,10 +51,8 @@ window.onload = () => {
     window.requestAnimationFrame(render);
   };
 
-  // setInterval(render, frameTime);
   window.requestAnimationFrame(render);
 
-  // Eventos de teclado
   document.body.addEventListener("keydown", (e) => {
     actors.forEach(
       (actor) => actor.keyboardEvent && actor.keyboardEvent(e.key)

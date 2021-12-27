@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable class-methods-use-this */
-const PICTURES = {
+import { Point } from "../types/Point";
+
+const PICTURES: any = {
   rock: {
     sheet: "dungeon",
     pos: { x: 0, y: 207 },
@@ -60,7 +60,7 @@ const PICTURES = {
   },
 };
 
-const loadSpriteSheet = (url) => {
+const loadSpriteSheet = (url: any) => {
   const img = new Image();
   img.src = url;
   return img;
@@ -71,11 +71,12 @@ const SPRITESHEETS = {
 };
 
 class DrawManager {
+  render_torch_time: number
   constructor() {
     this.render_torch_time = 0;
   }
 
-  getObject(objectName) {
+  getObject(objectName: string) {
     const objectToDraw = PICTURES[objectName];
     if (objectToDraw) {
       return objectToDraw;
@@ -83,7 +84,7 @@ class DrawManager {
     throw new Error(`No object to draw with name ${objectName}`);
   }
 
-  getDrawElements(ctx, objectName, position, delta = 0, animationOffset = 0) {
+  getDrawElements(ctx: any, objectName: any, position: Point, delta = 0, animationOffset = 0) {
     this.render_torch_time += delta;
     const getDrawElements = Math.floor(
       this.render_torch_time + animationOffset / 8
@@ -104,7 +105,7 @@ class DrawManager {
     );
   }
 
-  drawHalf(ctx, objectName, position, half = false) {
+  drawHalf(ctx: any, objectName: any, position: Point, half = false) {
     const { pos, size, dest, offset } = this.getObject(objectName);
     // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
     ctx.drawImage(
@@ -120,9 +121,9 @@ class DrawManager {
     );
   }
 
-  getDrawHeaders(ctx, objectName, half) {
+  getDrawHeaders(ctx: any, objectName: any, half: any) {
     const headerPositionBase = { x: 450, y: 10 };
-    const typeOffset = {
+    const typeOffset: any = {
       rock: { x: 0, y: 0 },
       fire: { x: 50, y: 0 },
       water: { x: 100, y: 0 },

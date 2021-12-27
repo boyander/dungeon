@@ -1,10 +1,11 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable class-methods-use-this */
 import { myGameMaster } from "./GameMaster";
 import { myMap } from "./Map";
 import { Chest } from "./Chest";
 
 class ChestManager {
+  chests: Array<Chest>;
+  latestOpenedChest: string;
+  chestInfo: []
   constructor() {
     this.chests = [
       // position,ID,num,head,color
@@ -20,11 +21,11 @@ class ChestManager {
     return this;
   }
 
-  update(deltaSeconds) { }
+  update(deltaSeconds: any) { }
 
-  keyboardEvent(key) { }
+  keyboardEvent(key: any) { }
 
-  draw(delta, ctx) { }
+  draw(delta: any, ctx: any) { }
 
   chestStartOptions() {
     let availablePositions = [];
