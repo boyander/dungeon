@@ -3,7 +3,7 @@ import { myMap } from "./Map";
 import { Hero } from "./Hero";
 
 class HeroManager {
-  heroes: []
+  heroes: any
   constructor() {
     this.heroes = [];
     return this;

@@ -1,7 +1,8 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable class-methods-use-this */
+import { Point } from "../types/Point";
+
 export class FPSViewer {
-  constructor(position) {
+  position: Point
+  constructor(position: Point) {
     this.position = position;
   }
 
@@ -9,7 +10,7 @@ export class FPSViewer {
 
   update() { }
 
-  draw(delta, ctx) {
+  draw(delta: any, ctx: any) {
     const fps = (1 / delta).toFixed(2);
     ctx.font = "15px Arial";
     ctx.fillStyle = "white";

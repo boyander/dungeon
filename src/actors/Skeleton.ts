@@ -1,11 +1,21 @@
 import { myGameMaster } from "./GameMaster";
 import { myChestManager } from "./ChestManager";
+import { Point } from "../types/Point";
 // import { am } from "../effects/AudioManager.js";
 
 const skeletonIMG = require("../../public/images/skeleton.png");
 
 export class Skeleton {
-  constructor(position, map) {
+  position: Point;
+  skeletonSize: number;
+  spritesheet: any;
+  sequences: Array<object>;
+  framePos: number;
+  time: number;
+  currentSequence: string;
+  speed: any;
+  map: any
+  constructor(position: Point, map: any) {
     this.position = { x: position.x, y: position.y };
     this.skeletonSize = 10;
 
@@ -31,13 +41,13 @@ export class Skeleton {
     this.map = map;
   }
 
-  draw(delta, ctx) {
+  draw(delta: any, ctx: any) {
     const frameSize = { x: 64, y: 64 };
     const seqName =
       this.speed.x === 0 && this.speed.y === 0
         ? `still-${this.currentSequence}`
         : `moving-${this.currentSequence}`;
-    const seq = this.sequences.find((s) => s.name === seqName);
+    const seq: any = this.sequences.find((s: any) => s.name === seqName);
     if (!seq) throw new Error("invalid seq");
 
     this.drawShadow(ctx);
@@ -62,7 +72,7 @@ export class Skeleton {
     myChestManager.checkChestsStatus();
   }
 
-  update(deltaSeconds) {
+  update(deltaSeconds: any) {
     if (myGameMaster.isSkeletonDead && !myGameMaster.debug) {
       this.currentSequence = "dead";
       this.speed = { x: 0, y: 0 };
@@ -104,7 +114,7 @@ export class Skeleton {
     return direction;
   }
 
-  keyboardEvent(key) {
+  keyboardEvent(key: any) {
     switch (key) {
       case "ArrowLeft":
         this.currentSequence = "left";
@@ -144,7 +154,7 @@ export class Skeleton {
       distance = 0;
       distance = Math.sqrt(
         Math.pow(this.position.x - ori.position.x, 2) +
-          Math.pow(this.position.y - ori.position.y, 2)
+        Math.pow(this.position.y - ori.position.y, 2)
       );
       // console.log(myChestManager.latestOpenedChest);
       if (distance < 30 && !ori.isChestOpen) {
@@ -168,11 +178,11 @@ export class Skeleton {
     });
   }
 
-  drawShadow(ctx) {
+  drawShadow(ctx: any) {
     if (this.currentSequence === "dance") myGameMaster.viewField++;
     // Create a canvas that we will use as a mask
-    const canvas = document.getElementById("canvas");
-    const maskCanvas = document.getElementById("canvasShadow");
+    const canvas: any = document.getElementById("canvas");
+    const maskCanvas: any = document.getElementById("canvasShadow");
     // Ensure same dimensions
     maskCanvas.width = canvas.width;
     maskCanvas.height = canvas.height;

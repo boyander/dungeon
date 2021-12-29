@@ -28,13 +28,13 @@ class GameMaster {
   heroNumber: number;
   myDungeonMap: string;
   viewField: number;
-  skeletonPosition: Object;
+  skeletonPosition: any;
   allChestsOpen: boolean;
   isSkeletonDead: boolean;
   debug: boolean;
 
   constructor() {
-    this.currentLevel = 0;
+    this.currentLevel = 1;
 
     // GAME SETTINGS
     this.heroSpeed = mode[this.currentLevel].heroSpeed;

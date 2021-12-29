@@ -4,7 +4,7 @@ import { myGameMaster } from "./GameMaster";
 
 const linkIMG = require("../../public/images/link.png");
 
-const POS = {
+const POS: any = {
   0: {
     currentSequence: "right",
     speedX: myGameMaster.heroSpeed,
@@ -28,7 +28,20 @@ const POS = {
 };
 
 export class Hero {
-  constructor(position: Point, map: string) {
+  position: Point;
+  heroSize: number;
+  spritesheet: any;
+  sequences: Array<Object>;
+  framePos: number;
+  time: number;
+  currentSequence: string;
+  speed: Point;
+  hypoDirections: number[][];
+  abailablesDirections: number[][];
+  current_direction: number[];
+  stop: boolean;
+  map: any
+  constructor(position: Point, map: any) {
     this.position = { x: position.x, y: position.y };
     this.heroSize = 10;
 
@@ -63,14 +76,14 @@ export class Hero {
     this.map = map;
   }
 
-  draw(delta, ctx) {
+  draw(delta: any, ctx: any) {
     // if (myGameMaster.start) {}
     const frameSize = { x: 120, y: 130 };
     const seqName =
       this.speed.x === 0 && this.speed.y === 0
         ? `still-${this.currentSequence}`
         : `moving-${this.currentSequence}`;
-    const seq = this.sequences.find((s) => s.name === seqName);
+    const seq: any = this.sequences.find((s: any) => s.name === seqName);
     if (!seq) throw new Error("invalid seq");
 
     // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
@@ -101,7 +114,7 @@ export class Hero {
     this.killSkeleton();
   }
 
-  update(deltaSeconds) {
+  update(deltaSeconds: any) {
     if (myGameMaster.allChestsOpen) {
       this.currentSequence = "down";
       this.speed = { x: 0, y: 0 };
@@ -135,8 +148,8 @@ export class Hero {
     this.current_direction = this.abailablesDirections[random];
   }
 
-  getMove(deltaSeconds) {
-    const currentDir = (e) => e === this.current_direction;
+  getMove(deltaSeconds: any) {
+    const currentDir = (e: any) => e === this.current_direction;
     const objectToDraw = POS[this.hypoDirections.findIndex(currentDir)];
 
     const { currentSequence, speedX, speedY } = objectToDraw;
@@ -147,7 +160,7 @@ export class Hero {
     this.nextTile(deltaSeconds);
   }
 
-  nextTile(deltaSeconds) {
+  nextTile(deltaSeconds: any) {
     const newPosX = this.position.x + this.speed.x * deltaSeconds;
     const newPosY = this.position.y + this.speed.y * deltaSeconds;
 

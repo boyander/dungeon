@@ -1,26 +1,28 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable class-methods-use-this */
+import { Point } from "../types/Point";
 import { myGameMaster } from "./GameMaster";
 
 export class Chronometer {
-  constructor(position) {
+  position: Point;
+  seg: number;
+  min: number
+  constructor(position: Point) {
     this.position = position;
     this.seg = 0;
     this.min = 0;
   }
 
-  keyboardEvent() {}
+  keyboardEvent() { }
 
-  update() {}
+  update() { }
 
-  draw(delta, ctx) {
+  draw(delta: any, ctx: any) {
     if (!myGameMaster.isSkeletonDead && !myGameMaster.allChestsOpen) {
       this.seg += delta;
     }
 
     let seg = Math.floor(this.seg);
     if (this.seg < 10) {
-      seg = `0${seg}`;
+      seg = parseInt(`0${seg}`);
     }
     if (seg === 60) {
       this.min += 1;

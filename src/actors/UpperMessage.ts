@@ -1,17 +1,17 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable class-methods-use-this */
+import { Point } from "../types/Point";
 import { myGameMaster } from "./GameMaster";
 
 export class UpperMessage {
-  constructor(position) {
+  position: Point
+  constructor(position: Point) {
     this.position = position;
   }
 
-  keyboardEvent() {}
+  keyboardEvent() { }
 
-  update() {}
+  update() { }
 
-  draw(delta, ctx) {
+  draw(delta: any, ctx: any) {
     ctx.font = "15px Arial";
     ctx.fillStyle = "white";
     ctx.fillText(
@@ -20,7 +20,7 @@ export class UpperMessage {
       this.position.y,
     );
     ctx.fillText(
-      `Level ${myGameMaster.level}`,
+      `Level ${myGameMaster.currentLevel}`,
       this.position.x + 300,
       this.position.y,
     );
